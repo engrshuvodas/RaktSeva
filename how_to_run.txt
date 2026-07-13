@@ -1,0 +1,36 @@
+Step-by-Step Guide: How to Run the "RaktSeva" Project Locally on Chrome
+
+Since this is a PHP and MySQL based project, you will need a local server environment to run it. We will use XAMPP for this guide, which is widely used on Windows.
+
+Step 1: Install XAMPP
+1. Download XAMPP for Windows from: https://www.apachefriends.org/index.html
+2. Install it. By default, it will be installed in `C:\xampp`.
+
+Step 2: Start Apache and MySQL
+1. Open the "XAMPP Control Panel".
+2. Click the "Start" button next to "Apache" to start the web server.
+3. Click the "Start" button next to "MySQL" to start the database server.
+(Both should turn green, indicating they are running successfully).
+
+Step 3: Move the Project to XAMPP's htdocs folder
+1. Copy your entire project folder `RaktSeva` (which is currently located at `c:\Users\SHUVO\Documents\GitHub\RaktSeva`).
+2. Paste it inside the `htdocs` directory of your XAMPP installation. 
+   The path should look like this: `C:\xampp\htdocs\RaktSeva`.
+
+Step 4: Set Up the Database
+1. Open Google Chrome.
+2. Type `http://localhost/phpmyadmin` in the address bar and hit Enter.
+3. In phpMyAdmin, click on "New" in the left sidebar to create a new database.
+4. Name the database exactly as: `blood_donation` (this is the name used in your `conn.php` file) and click "Create".
+5. Once the `blood_donation` database is created, click on it from the left sidebar to select it.
+6. Click on the "Import" tab at the top.
+7. Click the "Choose File" button.
+8. Navigate to your project folder (`C:\xampp\htdocs\RaktSeva\sql`) and select the file named `blood_bank_database.sql`.
+9. Scroll down and click the "Import" (or "Go") button at the bottom. This will set up all your tables.
+
+Step 5: Run the Project in Chrome
+1. Open a new tab in Google Chrome.
+2. Type the following URL in the address bar and press Enter:
+   `http://localhost/RaktSeva`
+
+Congratulations! The project should now be running in your Chrome browser.
