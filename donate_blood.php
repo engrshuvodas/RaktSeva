@@ -1,20 +1,7 @@
-<html>
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</head>
-
-<body>
 <?php
 $active ='donate';
- include('head.php') ?>
+include('head.php');
+?>
 
 <div id="page-container" style="margin-top:50px; position: relative;min-height: 84vh;">
   <div class="container">
@@ -24,6 +11,7 @@ $active ='donate';
         <h1 class="mt-4 mb-3">Donate Blood </h1>
       </div>
 </div>
+<div class="card p-4 mb-5">
 <form name="donor" action="savedata.php" method="post">
 <div class="row">
 <div class="col-lg-4 mb-4">
@@ -78,6 +66,8 @@ $active ='donate';
   <div class="col-lg-4 mb-4">
   <div><input type="submit" name="submit" class="btn btn-primary" value="Submit" style="cursor:pointer"></div>
   </div>
+</div>
+</form>
 </div>
 </div>
 </div>
