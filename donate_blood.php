@@ -4,7 +4,7 @@ include('head.php');
 ?>
 
 <div class="page-wrapper">
-  <div class="container mt-section">
+  <div class="container">
 
     <div class="page-hero" style="border-radius: var(--radius-lg); margin-bottom: 30px; padding: 40px 30px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);">
       <h1><i class="fa-solid fa-hand-holding-droplet mr-2"></i> Donate Blood</h1>

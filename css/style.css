@@ -261,7 +261,7 @@ hr {
    ============================================================ */
 .page-wrapper {
   min-height: calc(100vh - 64px - 80px);
-  padding: 64px 0 60px; /* 64px top = navbar height */
+  padding: 24px 0 60px; /* header is sticky, body content starts after it via sticky positioning */
 }
 
 .section-label {

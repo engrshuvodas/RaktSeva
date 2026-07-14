@@ -4,7 +4,7 @@ include('head.php');
 ?>
 
 <div class="page-wrapper">
-  <div class="container mt-section">
+  <div class="container">
 
     <div class="page-hero" style="border-radius: var(--radius-lg); margin-bottom: 30px; padding: 40px 30px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);">
       <h1><i class="fa-solid fa-heart-circle-check mr-2"></i> Why Should I Donate Blood?</h1>
