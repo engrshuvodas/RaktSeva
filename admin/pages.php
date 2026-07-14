@@ -1,156 +1,76 @@
-
-<html>
-
-<head>
-
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
-<style>
-
-
-#sidebar{position:relative;margin-top:-20px}
-#content{position:relative;margin-left:210px}
-@media screen and (max-width: 600px) {
-
-  #content {
-    position:relative;margin-left:auto;margin-right:auto;
-  }
-}
-  #he{
-      font-size: 14px;
-      font-weight: 600;
-      text-transform: uppercase;
-      padding: 3px 7px;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 3px;
-      align:center
-  }
-
-</style>
-
-</head>
 <?php
+session_start();
 include 'conn.php';
-  include 'session.php';
-  if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-  ?>
-<body style="color:black">
-<div id="header" >
-<?php include 'header.php';
+include 'session.php';
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header("Location: login.php");
+    exit;
+}
+$page_title = "Manage Pages";
+$active = "pages";
+include 'header.php';
+include 'sidebar.php';
 ?>
-</div>
-<div id="sidebar">
-<?php $active="pages";
- include 'sidebar.php'; ?>
 
-</div>
-<div id="content" >
-  <div class="content-wrapper">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-12 lg-12 sm-12">
+<div class="admin-main">
+  <div class="admin-content">
+    <div class="page-header">
+      <h1>Manage Page Data</h1>
+      <p>Edit the content displayed on the public website pages.</p>
+    </div>
 
-          <h1 class="page-title">Manage Page Data</h1>
-
-        </div>
-
+    <div class="admin-card">
+      <div class="admin-card-header">
+        <h3><i class="fa-solid fa-file-lines"></i> Website Pages</h3>
       </div>
-      <hr>
-      <?php
-      $limit = 3;
-      if(isset($_GET['page'])){
-        $page = $_GET['page'];
-      }else{
-        $page = 1;
-      }
-      $offset = ($page - 1) * $limit;
-      $count=$offset+1;
-        $sql= "select * from pages LIMIT {$offset},{$limit} ";
-        $result=mysqli_query($conn,$sql);
-        if(mysqli_num_rows($result)>0)   {
-       ?>
-
-       <div class="table-responsive">
-      <table class="table table-bordered" style="text-align:center">
-          <thead style="text-align:center">
-          <th style="text-align:center">S.no</th>
-          <th style="text-align:center">Page Name</th>
-          <th style="text-align:center">Page Type</th>
-          <th style="text-align:center">Page Data</th>
-          <th style="text-align:center">Edit Page</th>
+      <div class="table-responsive">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>S.no</th>
+              <th>Page Name</th>
+              <th>Page Type</th>
+              <th>Content Preview</th>
+              <th>Action</th>
+            </tr>
           </thead>
           <tbody>
             <?php
-            while($row = mysqli_fetch_assoc($result)) { ?>
-          <tr>
-                  <td ><?php echo  $count++; ?></td>
-                  <td ><?php echo $row['page_name']; ?></td>
-                  <td ><?php echo $row['page_type']; ?></td>
-                  <td id="example" style="text-align:left"><div style="width:100%; max-height:110px; overflow:auto"><?php echo $row['page_data']; ?></div></td>
-                    <td id="he" style="width:100px;">
-                    <a style="background-color:aqua" href='update_page_details.php?type=<?php echo $row['page_type'];?>'> <span class="glyphicon glyphicon-edit"></span></a>
-                </td>
-              </tr>
-            <?php } ?>
-          </tbody>
-      </table>
-    </div>
-    <?php } ?>
+            $limit = 10;
+            $pg = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+            $offset = ($pg - 1) * $limit;
+            $cnt = $offset + 1;
 
-    <div class="table-responsive"style="text-align:center;align:center">
-        <?php
-        $sql1 = "SELECT * FROM pages";
-        $result1 = mysqli_query($conn, $sql1) or die("Query Failed.");
+            $sql = "SELECT * FROM pages LIMIT {$offset},{$limit}";
+            $result = mysqli_query($conn, $sql);
 
-        if(mysqli_num_rows($result1) > 0){
-
-          $total_records = mysqli_num_rows($result1);
-
-          $total_page = ceil($total_records / $limit);
-
-          echo '<ul class="pagination admin-pagination">';
-          if($page > 1){
-            echo '<li><a href="pages.php?page='.($page - 1).'">Prev</a></li>';
-          }
-          for($i = 1; $i <= $total_page; $i++){
-            if($i == $page){
-              $active = "active";
-            }else{
-              $active = "";
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+            ?>
+            <tr>
+              <td><?= $cnt++ ?></td>
+              <td style="font-weight:600;"><?= htmlspecialchars($row['page_name']) ?></td>
+              <td><span style="background:var(--bg);border:1px solid var(--border);padding:2px 8px;border-radius:4px;font-size:12px;"><?= htmlspecialchars($row['page_type']) ?></span></td>
+              <td><div style="max-width:300px;font-size:13px;color:var(--text-muted);overflow:hidden;max-height:60px;"><?= strip_tags($row['page_data']) ?></div></td>
+              <td>
+                <a class="btn-admin-edit" href="update_page_details.php?type=<?= $row['page_type'] ?>">
+                  <i class="fa-solid fa-pen-to-square"></i> Edit
+                </a>
+              </td>
+            </tr>
+            <?php
+                }
+            } else {
+                echo '<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--text-muted);">No pages found.</td></tr>';
             }
-            echo '<li class="'.$active.'"><a href="pages.php?page='.$i.'">'.$i.'</a></li>';
-          }
-          if($total_page > $page){
-            echo '<li><a href="pages.php?page='.($page + 1).'">Next</a></li>';
-          }
-
-          echo '</ul>';
-        }
-        ?>
+            ?>
+          </tbody>
+        </table>
       </div>
-  </div>
+    </div>
+
   </div>
 </div>
-<?php }
-   else {
-       echo '<div class="alert alert-danger"><b> Please Login First To Access Admin Portal.</b></div>';
-       ?>
-       <form method="post" name="" action="login.php" class="form-horizontal">
-         <div class="form-group">
-           <div class="col-sm-8 col-sm-offset-4" style="float:left">
 
-             <button class="btn btn-primary" name="submit" type="submit">Go to Login Page</button>
-           </div>
-         </div>
-       </form>
-   <?php }
-
-    ?>
 </body>
 </html>

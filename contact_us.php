@@ -2,88 +2,94 @@
 $active ='contact';
 include('head.php'); 
 ?>
-<?php
-if(isset($_POST["send"])){
-  $name=$_POST['fullname'];
-$number=$_POST['contactno'];
-$email=$_POST['email'];
-$message=$_POST['message'];
-$conn=mysqli_connect("localhost","root","","blood_donation") or die("Connection error");
-$sql= "insert into contact_query (query_name,query_mail,query_number,query_message) values('{$name}','{$number}','{$email}','{$message}')";
-$result=mysqli_query($conn,$sql) or die("query unsuccessful.");
-  echo '<div class="alert alert-success alert_dismissible"><b><button type="button" class="close" data-dismiss="alert">&times;</button></b><b>Query Sent, We will contact you shortly. </b></div>';
-}?>
 
-<div id="page-container" style="margin-top:50px; position: relative;min-height: 84vh;">
-  <div class="container">
-  <div id="content-wrap" style="padding-bottom:50px;">
-    <h1 class="mt-4 mb-3">Contact</h1>
-    <div class="row">
+<div class="page-wrapper">
+  <div class="container mt-section">
+
+    <div class="page-hero" style="border-radius: var(--radius-lg); margin-bottom: 30px; padding: 40px 30px; background: linear-gradient(135deg, var(--dark) 0%, var(--dark-mid) 100%);">
+      <h1><i class="fa-solid fa-headset mr-2"></i> Contact Us</h1>
+      <p>Have questions? We'd love to hear from you. Send us a message.</p>
+    </div>
+
+    <?php
+    if (isset($_POST["send"])) {
+        $name    = $_POST['fullname'];
+        $number  = $_POST['contactno'];
+        $email   = $_POST['email'];
+        $message = $_POST['message'];
+        
+        include 'conn.php';
+        $sql = "insert into contact_query (query_name,query_mail,query_number,query_message) values('{$name}','{$number}','{$email}','{$message}')";
+        $result = mysqli_query($conn, $sql) or die("query unsuccessful.");
+        echo '<div class="alert alert-success mb-4"><i class="fa-solid fa-circle-check"></i> Query Sent! We will contact you shortly.</div>';
+    }
+    ?>
+
+    <div class="row mb-section">
       <div class="col-lg-8 mb-4">
-        <h3>Send us a Message</h3>
-        <div class="card p-4">
-        <form name="sentMessage"  method="post">
-            <div class="control-group form-group">
-                <div class="controls">
-                    <label>Full Name:</label>
-                    <input type="text" class="form-control" id="name" name="fullname" required>
-                    <p class="help-block"></p>
+        <div class="rs-card h-100">
+          <div class="rs-card-header"><i class="fa-solid fa-paper-plane"></i> Send us a Message</div>
+          <div class="rs-card-body">
+            <form name="sentMessage" method="post">
+                <div class="form-group mb-3">
+                    <label class="form-label">Full Name <span>*</span></label>
+                    <input type="text" class="form-control" name="fullname" required>
                 </div>
-            </div>
-            <div class="control-group form-group">
-                <div class="controls">
-                    <label>Phone Number:</label>
-                    <input type="tel" class="form-control" id="phone" name="contactno"  required >
+                <div class="form-group mb-3">
+                    <label class="form-label">Phone Number <span>*</span></label>
+                    <input type="tel" class="form-control" name="contactno" required>
                 </div>
-            </div>
-            <div class="control-group form-group">
-                <div class="controls">
-                    <label>Email Address:</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
+                <div class="form-group mb-3">
+                    <label class="form-label">Email Address <span>*</span></label>
+                    <input type="email" class="form-control" name="email" required>
                 </div>
-            </div>
-            <div class="control-group form-group">
-                <div class="controls">
-                    <label>Message:</label>
-                    <textarea rows="10" cols="100" class="form-control" id="message" name="message" required  maxlength="999" style="resize:none"></textarea>
+                <div class="form-group mb-4">
+                    <label class="form-label">Message <span>*</span></label>
+                    <textarea class="form-control" name="message" required maxlength="999" style="min-height: 150px;"></textarea>
                 </div>
-            </div>
-            <button type="submit" name="send"  class="btn btn-primary">Send Message</button>
-        </form>
+                <button type="submit" name="send" class="btn btn-primary px-4"><i class="fa-solid fa-paper-plane mr-2"></i> Send Message</button>
+            </form>
+          </div>
         </div>
-    </div>
-    <div class="col-lg-4 mb-4">
-        <div class="card p-4">
-        <h2>Contact Details</h2>
-        <?php
-          include 'conn.php';
-          $sql= "select * from contact_info";
-          $result=mysqli_query($conn,$sql);
-          if(mysqli_num_rows($result)>0)   {
-              while($row = mysqli_fetch_assoc($result)) { ?>
-        <br>
-        <p>
-            <h4>Address :</h4><?php echo $row['contact_address']; ?>
-        </p>
-        <p>
-            <h4>Contact Number :</h4><?php echo $row['contact_phone']; ?>
-        </p>
-        <p>
-          <h4>  Email: </h4><a href="#"><?php echo $row['contact_mail']; ?></a>
-          </a></b>
-        </p>
-        <?php }
-      } ?>
+      </div>
+      
+      <div class="col-lg-4 mb-4">
+        <div class="rs-card h-100">
+          <div class="rs-card-header"><i class="fa-solid fa-address-book"></i> Contact Details</div>
+          <div class="rs-card-body" style="font-size: 15px;">
+            <?php
+              include 'conn.php';
+              $sql = "select * from contact_info";
+              $result = mysqli_query($conn, $sql);
+              if (mysqli_num_rows($result) > 0) {
+                  while ($row = mysqli_fetch_assoc($result)) { 
+            ?>
+            
+            <div class="mb-4">
+              <h4 style="font-size: 13px; text-transform: uppercase; color: var(--text-muted); font-weight: 700; margin-bottom: 6px;"><i class="fa-solid fa-location-dot mr-1"></i> Address</h4>
+              <div><?= htmlspecialchars($row['contact_address']); ?></div>
+            </div>
+            
+            <div class="mb-4">
+              <h4 style="font-size: 13px; text-transform: uppercase; color: var(--text-muted); font-weight: 700; margin-bottom: 6px;"><i class="fa-solid fa-phone mr-1"></i> Contact Number</h4>
+              <div><?= htmlspecialchars($row['contact_phone']); ?></div>
+            </div>
+            
+            <div class="mb-4">
+              <h4 style="font-size: 13px; text-transform: uppercase; color: var(--text-muted); font-weight: 700; margin-bottom: 6px;"><i class="fa-solid fa-envelope mr-1"></i> Email</h4>
+              <a href="mailto:<?= htmlspecialchars($row['contact_mail']); ?>"><?= htmlspecialchars($row['contact_mail']); ?></a>
+            </div>
+            
+            <?php 
+                  }
+              } 
+            ?>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-<!-- /.row -->
 
+  </div>
+</div>
 
-</div>
-</div>
-<?php include 'footer.php' ?>
-</div>
-</body>
-
-</html>
+<?php include 'footer.php'; ?>

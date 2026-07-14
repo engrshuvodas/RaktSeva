@@ -1,133 +1,98 @@
-<?php include 'session.php'; ?>
-<html>
-
-<head>
-
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
-<style>
-
-#sidebar{position:relative;margin-top:-20px}
-#content{position:relative;margin-left:210px}
-@media screen and (max-width: 600px) {
-  #content {
-    position:relative;margin-left:auto;margin-right:auto;
-  }
+<?php
+session_start();
+include 'conn.php';
+include 'session.php';
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header("Location: login.php");
+    exit;
 }
-</style>
-</head>
-
-<body style="color:black">
-  <?php
-  include 'conn.php';
-    if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-    ?>
-<div id="header">
-<?php $active="add"; include 'header.php';
+$page_title = "Add Donor";
+$active = "add";
+include 'header.php';
+include 'sidebar.php';
 ?>
-</div>
-<div id="sidebar">
-<?php include 'sidebar.php'; ?>
 
-</div>
-<div id="content">
-  <div class="content-wrapper">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-12 lg-12 sm-12">
-
-          <h1 class="page-title">Add Donor</h1>
-        </div>
-      </div>
-      <hr>
-      <form name="donor" action="save_donor_data.php" method="post">
-      <div class="row">
-      <div class="col-lg-4 mb-4"><br>
-      <div class="font-italic">Full Name<span style="color:red">*</span></div>
-      <div><input type="text" name="fullname" class="form-control" required></div>
-      </div>
-      <div class="col-lg-4 mb-4"><br>
-      <div class="font-italic">Mobile Number<span style="color:red">*</span></div>
-      <div><input type="text" name="mobileno" class="form-control" required></div>
-      </div>
-      <div class="col-lg-4 mb-4"><br>
-      <div class="font-italic">Email Id</div>
-      <div><input type="email" name="emailid" class="form-control"></div>
-      </div>
-      </div>
-
-      <div class="row">
-      <div class="col-lg-4 mb-4"><br>
-      <div class="font-italic">Age<span style="color:red">*</span></div>
-      <div><input type="text" name="age" class="form-control" required></div>
-      </div>
-
-
-      <div class="col-lg-4 mb-4"><br>
-      <div class="font-italic">Gender<span style="color:red">*</span></div>
-      <div><select name="gender" class="form-control" required>
-      <option value="">Select</option>
-      <option value="Male">Male</option>
-      <option value="Female">Female</option>
-      </select>
-      </div>
+<div class="admin-main">
+  <div class="admin-content">
+    <div class="page-header">
+      <h1>Add Donor</h1>
+      <p>Manually register a new blood donor.</p>
     </div>
-      <div class="col-lg-4 mb-4"><br>
-      <div class="font-italic">Blood Group<span style="color:red">*</span></div>
-      <div><select name="blood" class="form-control" required>
-      <option value=""selected disabled>Select</option>
-      <?php
-        include 'conn.php';
-        $sql= "select * from blood";
-        $result=mysqli_query($conn,$sql) or die("query unsuccessful.");
-      while($row=mysqli_fetch_assoc($result)){
-       ?>
-       <option value=" <?php echo $row['blood_id'] ?>"> <?php echo $row['blood_group'] ?> </option>
-     <?php } ?>
-      </select>
-      </div>
-      </div>
 
+    <div class="admin-card" style="max-width: 900px;">
+      <div class="admin-card-header">
+        <h3><i class="fa-solid fa-user-plus"></i> Donor Information</h3>
       </div>
-      <br>
-      <div class="row">
-      <div class="col-lg-4 mb-4">
-      <div class="font-italic">Address<span style="color:red">*</span></div>
-      <div><textarea class="form-control" name="address" required></textarea></div></div>
-    </div> <br>
-      <div class="row">
-        <div class="col-lg-4 mb-4">
-        <div><input type="submit" name="submit" class="btn btn-primary" value="Submit" style="cursor:pointer" onclick="popup()"></div>
-        </div>
-      </div>
-    </form>
-
-      </div>
-      </div>
-      </div>
-      <?php
-    } else {
-        echo '<div class="alert alert-danger"><b> Please Login First To Access Admin Portal.</b></div>';
-        ?>
-        <form method="post" name="" action="login.php" class="form-horizontal">
-          <div class="form-group">
-            <div class="col-sm-8 col-sm-offset-4" style="float:left">
-
-              <button class="btn btn-primary" name="submit" type="submit">Go to Login Page</button>
+      <div class="admin-card-body">
+        <form name="donor" action="save_donor_data.php" method="post">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="admin-form-group">
+                <label class="admin-form-label">Full Name <span>*</span></label>
+                <input type="text" name="fullname" class="admin-form-control" required>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="admin-form-group">
+                <label class="admin-form-label">Mobile Number <span>*</span></label>
+                <input type="text" name="mobileno" class="admin-form-control" required>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="admin-form-group">
+                <label class="admin-form-label">Email Id</label>
+                <input type="email" name="emailid" class="admin-form-control">
+              </div>
             </div>
           </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="admin-form-group">
+                <label class="admin-form-label">Age <span>*</span></label>
+                <input type="text" name="age" class="admin-form-control" required>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="admin-form-group">
+                <label class="admin-form-label">Gender <span>*</span></label>
+                <select name="gender" class="admin-form-control" required>
+                  <option value="">Select</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="admin-form-group">
+                <label class="admin-form-label">Blood Group <span>*</span></label>
+                <select name="blood" class="admin-form-control" required>
+                  <option value="" selected disabled>Select</option>
+                  <?php
+                    $sql = "select * from blood";
+                    $res = mysqli_query($conn, $sql);
+                    while ($r = mysqli_fetch_assoc($res)) {
+                      echo '<option value="'.$r['blood_id'].'">'.htmlspecialchars($r['blood_group']).'</option>';
+                    }
+                  ?>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="admin-form-group">
+            <label class="admin-form-label">Address <span>*</span></label>
+            <textarea class="admin-form-control" name="address" required></textarea>
+          </div>
+          <div class="mt-2">
+            <button type="submit" name="submit" class="btn-admin-primary">
+              <i class="fa-solid fa-save"></i> Save Donor
+            </button>
+          </div>
         </form>
-    <?php }
-     ?>
-     <script>
-     function popup() {
-       alert("Data added Successfully.");
-     }
-     </script>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 </body>
 </html>

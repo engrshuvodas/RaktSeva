@@ -1,84 +1,48 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-<style>
-body {
-  margin: 0;
-font-family: 'Averia Gruesa Libre';font-size: 15px;
-    color:#F8F9F9;
-}
+<!-- SIDEBAR -->
+<div class="admin-sidebar" id="adminSidebar">
 
-.sidebar {
-  margin: 0;
-  padding: 0;
-  width: 210px;
-  background-color: #333333;
-  position: fixed;
-  height: 100%;
-  overflow: auto;
+  <div class="sidebar-section-label">Main Menu</div>
+  <div class="sidebar-nav">
+    <a href="dashboard.php" class="<?php if(isset($active) && $active=='dashboard') echo 'act'; ?>">
+      <i class="fa-solid fa-gauge"></i> Dashboard
+    </a>
+  </div>
 
-}
+  <div class="sidebar-section-label">Donors</div>
+  <div class="sidebar-nav">
+    <a href="add_donor.php" class="<?php if(isset($active) && $active=='add') echo 'act'; ?>">
+      <i class="fa-solid fa-user-plus"></i> Add Donor
+    </a>
+    <a href="donor_list.php" class="<?php if(isset($active) && $active=='list') echo 'act'; ?>">
+      <i class="fa-solid fa-users"></i> Donor List
+    </a>
+  </div>
 
-.sidebar a {
-  display: block;
-  color: white;
+  <div class="sidebar-section-label">Management</div>
+  <div class="sidebar-nav">
+    <a href="query.php" class="<?php if(isset($active) && $active=='query') echo 'act'; ?>">
+      <i class="fa-solid fa-clipboard-question"></i> Contact Queries
+    </a>
+    <a href="pages.php" class="<?php if(isset($active) && $active=='pages') echo 'act'; ?>">
+      <i class="fa-solid fa-file-lines"></i> Manage Pages
+    </a>
+    <a href="update_contact.php" class="<?php if(isset($active) && $active=='contact') echo 'act'; ?>">
+      <i class="fa-solid fa-address-card"></i> Contact Info
+    </a>
+  </div>
 
-  padding: 16px;
-  text-decoration: none;
-}
-
-
-
-.sidebar a:hover:not(.active) {
-  background-color: #555;
-  color: white;
-}
-
-div.content {
-  margin-left: 200px;
-  padding: 1px 16px;
-  height: 1000px;
-}
-
-@media screen and (max-width: 700px) {
-  .sidebar {
-    width: 100%;
-    height: auto;
-    position: relative;
-  }
-  .sidebar a {float: left;}
-  div.content {margin-left: 0;}
-}
-a.act{
-background: linear-gradient(to right, #00C9FF 0%, #92FE9D 100%);
-color: black;
-border-radius:10px;
-}
-
-
-@media screen and (max-width: 400px) {
-  .sidebar a {
-    text-align: center;
-    float: none;
-  }
-}
-</style>
-</head>
-<body>
-
-<div class="sidebar" ><b>
-  <a href="dashboard.php"   <?php if($active=='dashboard') echo "class='act'"; ?>><span class="glyphicon glyphicon-dashboard"></span>&nbsp&nbspDashboard</a>
-  <a href="add_donor.php"   <?php if($active=='add') echo "class='act'"; ?>><span class="glyphicon glyphicon-pencil"></span>&nbsp&nbspAdd Donor</a>
-  <a href="donor_list.php"   <?php if($active=='list') echo "class='act'"; ?>><span class="glyphicon glyphicon-list-alt"></span>&nbsp&nbsp Donor List</a>
-  <a href="query.php"   <?php if($active=='query') echo "class='act'"; ?>><span class="glyphicon glyphicon-check"></span>&nbsp&nbspCheck Contactus Query</a>
-
-    <a href="pages.php"   <?php if($active=='pages') echo "class='act'"; ?>><span class="glyphicon glyphicon-edit"></span>&nbsp&nbspManage Pages</a>
-  <a href="update_contact.php"   <?php if($active=='contact') echo "class='act'"; ?>><span class="glyphicon glyphicon-edit"></span>&nbsp&nbspUpdate Contact Info</a>
-
+  <div class="sidebar-footer">
+    <a href="../home.php" target="_blank">
+      <i class="fa-solid fa-arrow-up-right-from-square"></i> View Public Site
+    </a>
+  </div>
 </div>
+
+<script>
+  var toggleBtn = document.getElementById('sidebarToggle');
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', function() {
+      document.getElementById('adminSidebar').classList.toggle('open');
+    });
+  }
+</script>

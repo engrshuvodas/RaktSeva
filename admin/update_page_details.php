@@ -1,188 +1,91 @@
-<html>
-
-<head>
-
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="nicEdit.js"></script>
-<style>
-
-#sidebar{position:relative;margin-top:-20px}
-#content{position:relative;margin-left:210px}
-@media screen and (max-width: 600px) {
-  #content {
-    position:relative;margin-left:auto;margin-right:auto;
-  }
-
-  #area1, #area4{
-    width: 70vw;
-    min-height: 50vh;
-    font-family: tahoma;
-  }
-
-  .nicEdit-panel > div > * {
-    opacity: 1 !important;
-  }
-
-
-  .nicEdit-buttonContain {
-      padding: .5em;
-  }
-  .nicEdit-panelContain{
-
-  }
-
-  .nicEdit-selectContain{
-  margin-top: 8px;
-  padding:.5em
-  }
-
-   .nicEdit-selectTxt{
-       font-family: Tahoma !important;
-       font-size: 12px !important;
-   }
-
-   .nicEdit-main{
-    outline: 0;
-  }
-
-
+<?php
+session_start();
+include 'conn.php';
+include 'session.php';
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header("Location: login.php");
+    exit;
 }
-</style>
-</head>
 
-<body style="color:black">
+$msg = '';
+$page_type = isset($_GET['type']) ? $_GET['type'] : '';
 
-  <?php
-  include 'conn.php';
-    include 'session.php';
-    if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-    ?>
+// Handle update submission
+if (isset($_POST['submit']) && $page_type) {
+    $data = mysqli_real_escape_string($conn, $_POST['data']);
+    $sql  = "UPDATE pages SET page_data='$data' WHERE page_type='$page_type'";
+    mysqli_query($conn, $sql) or die("query unsuccessful.");
+    $msg = '<div class="alert alert-success"><i class="fa-solid fa-check"></i> Page Data Updated Successfully.</div>';
+}
 
-<div id="header">
-<?php include 'header.php';
-?>
-</div>
-<div id="sidebar">
-<?php $active =""; 
-include 'sidebar.php'; ?>
+// Map type to page label
+$type_labels = [
+    'aboutus'      => 'About Us',
+    'donor'        => 'Why Donate Blood',
+    'needforblood' => 'The Need For Blood',
+    'bloodtips'    => 'Blood Tips',
+    'whoyouhelp'   => 'Who You Could Help',
+    'bloodgroups'  => 'Blood Groups',
+    'universal'    => 'Universal Donors & Recipients',
+];
+$page_label = isset($type_labels[$page_type]) ? $type_labels[$page_type] : $page_type;
 
-</div>
-<div id="content">
-  <div class="content-wrapper">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-12 lg-12 sm-12">
-
-          <h1 class="page-title">Update Page Details</h1>
-        </div>
-      </div>
-      <hr>
-      <div class="row">
-        <div class="col-md-10">
-          <div class="panel panel-default">
-            <div class="panel-heading">Page Details</div>
-            <div class="panel-body">
-
-  <form name="updata_page"  method="post">
-                <div class="hr-dashed"></div>
-
-                <div class="form-group">
-                  <label class="col-sm-4 control-label">Selected Page : </label>
-                    <?php
-                    include 'conn.php';
-              switch($_GET['type'])
-              {
-                    case "aboutus" :
-                          echo "About US";
-                          break;
-                    case "donor" :
-                          echo "Why Donate Blood";
-                          break;
-                    case "needforblood" :
-                          echo "The Need For Blood";
-                          break;
-                    case "needforblood" :
-                          echo "The Need For Blood";
-                          break;
-                    case "bloodtips" :
-                          echo "Blood Tips";
-                          break;
-                    case "whoyouhelp" :
-                          echo "Why you could Help";
-                          break;
-                    case "bloodgroups" :
-                          echo "Blood Groups";
-                          break;
-                    case "universal" :
-                          echo "Universal Donors And Recepients";
-                          break;
-              }
-
-              ?>
-                </div>
-                <div class="form-group">
-                      <label class="col-sm-4 control-label">Page Details: </label>
-                      <div class="col-sm-4">
-                        <div id="sample">
-
-                      <textarea cols="60" rows="10" id="area4" name="data">
-                    </textarea>
-
-
-                    </div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="col-sm-8 col-sm-offset-4"><br>
- <button class="btn btn-primary" name="submit" type="submit">Update</button>
-        </div>
-      </div>
-
-    </form>
-
-    </div>
-    </div>
-    </div>
-
-    </div>
-
-
-
-    <?php if(isset($_POST['submit']))
-    {
-      $type=$_GET['type'];
-      $data=$_POST['data'];
-      $conn=mysqli_connect("localhost","root","","blood_donation") or die("Connection error");
-      $sql= "update pages set page_data='{$data}'where page_type='{$type}'";
-      $result=mysqli_query($conn,$sql) or die("query unsuccessful.");
-    echo '<div class="alert alert-success"><b>Page Data Updated Successfully.</b></div>';
+// Fetch existing content
+$existing = '';
+if ($page_type) {
+    $res = mysqli_query($conn, "SELECT page_data FROM pages WHERE page_type='$page_type'");
+    if ($res && mysqli_num_rows($res) > 0) {
+        $row = mysqli_fetch_assoc($res);
+        $existing = $row['page_data'];
     }
+}
 
-    ?>
+$page_title = "Update Page";
+$active = "pages";
+include 'header.php';
+include 'sidebar.php';
+?>
 
-            </div>
+<div class="admin-main">
+  <div class="admin-content">
+    <div class="page-header">
+      <h1>Update Page Content</h1>
+      <p>Editing: <strong><?= htmlspecialchars($page_label) ?></strong></p>
+    </div>
+
+    <div class="admin-card" style="max-width: 900px;">
+      <div class="admin-card-header">
+        <h3><i class="fa-solid fa-pen-to-square"></i> Page Details</h3>
+      </div>
+      <div class="admin-card-body">
+        <?= $msg ?>
+        <form name="update_page" method="post">
+          <div class="admin-form-group">
+            <label class="admin-form-label">Page: <?= htmlspecialchars($page_label) ?></label>
+            <textarea id="area4" name="data" class="admin-form-control" rows="12"><?= htmlspecialchars($existing) ?></textarea>
           </div>
-        </div>
-  <?php
- } else {
-     echo '<div class="alert alert-danger"><b> Please Login First To Access Admin Portal.</b></div>';
-     ?>
-     <form method="post" name="" action="login.php" class="form-horizontal">
-       <div class="form-group">
-         <div class="col-sm-8 col-sm-offset-4" style="float:left">
+          <div class="mt-2 d-flex" style="gap:10px;">
+            <button class="btn-admin-primary" name="submit" type="submit">
+              <i class="fa-solid fa-floppy-disk"></i> Update
+            </button>
+            <a href="pages.php" class="btn-admin-secondary">
+              <i class="fa-solid fa-arrow-left"></i> Back to Pages
+            </a>
+          </div>
+        </form>
 
-           <button class="btn btn-primary" name="submit" type="submit">Go to Login Page</button>
-         </div>
-       </div>
-     </form>
- <?php }
-  ?>
+        <!-- NicEdit rich text editor -->
+        <script type="text/javascript" src="nicEdit.js"></script>
+        <script type="text/javascript">
+          bkLib.onDomLoaded(function() {
+            new nicEditor({fullPanel: true}).panelInstance('area4');
+          });
+        </script>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 </body>
 </html>
