@@ -1,48 +1,65 @@
 <div align="center">
 
-<img src="https://img.shields.io/badge/RaktSeva-Blood%20Bank%20Management%20System-b91c1c?style=for-the-badge&logo=heart&logoColor=white" alt="RaktSeva Banner"/>
+<!-- HERO BANNER -->
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=b91c1c&height=220&section=header&text=%F0%9F%A9%B8%20RaktSeva&fontSize=72&fontColor=ffffff&fontAlignY=40&desc=Blood%20Bank%20%26%20Donor%20Management%20System&descAlignY=60&descColor=ffcccc&animation=fadeIn" />
 
-# 🩸 RaktSeva
-
-### A Modern Blood Bank Management System | Parul Sevashram Hospital Initiative
+<br/>
 
 <p>
-  <img src="https://img.shields.io/badge/PHP-8.x-777BB4?style=flat-square&logo=php&logoColor=white" />
-  <img src="https://img.shields.io/badge/MySQL-Database-4479A1?style=flat-square&logo=mysql&logoColor=white" />
-  <img src="https://img.shields.io/badge/Bootstrap-4.6-7952B3?style=flat-square&logo=bootstrap&logoColor=white" />
-  <img src="https://img.shields.io/badge/XAMPP-Server-FB7A24?style=flat-square&logo=xampp&logoColor=white" />
-  <img src="https://img.shields.io/badge/License-MIT-b91c1c?style=flat-square" />
-  <img src="https://img.shields.io/badge/Status-Active%20Development-orange?style=flat-square" />
+  <img src="https://img.shields.io/badge/PHP-8.x-777BB4?style=for-the-badge&logo=php&logoColor=white" />
+  &nbsp;
+  <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" />
+  &nbsp;
+  <img src="https://img.shields.io/badge/Bootstrap-4.6-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white" />
+  &nbsp;
+  <img src="https://img.shields.io/badge/XAMPP-FB7A24?style=for-the-badge&logo=xampp&logoColor=white" />
+  &nbsp;
+  <img src="https://img.shields.io/badge/jQuery-3.5.1-0769AD?style=for-the-badge&logo=jquery&logoColor=white" />
 </p>
 
 <p>
-  <em>Saving lives, one donation at a time. ❤️</em>
+  <img src="https://img.shields.io/badge/Status-Active%20Development-22c55e?style=flat-square" />
+  &nbsp;
+  <img src="https://img.shields.io/badge/License-MIT-b91c1c?style=flat-square" />
+  &nbsp;
+  <img src="https://img.shields.io/badge/Hospital-Parul%20Sevashram-ff6b6b?style=flat-square&logo=heart&logoColor=white" />
+</p>
+
+<br/>
+
+<blockquote>
+<p><strong>A Modern Blood Bank Management System | Parul Sevashram Hospital Initiative</strong></p>
+<p><em>Saving lives, one donation at a time. ❤️</em></p>
+</blockquote>
+
+<br/>
+
+<!-- NAV PILLS -->
+<p>
+  <a href="#-about-the-project"><img src="https://img.shields.io/badge/About-b91c1c?style=flat-square" /></a>
+  <a href="#-features"><img src="https://img.shields.io/badge/Features-991b1b?style=flat-square" /></a>
+  <a href="#-tech-stack"><img src="https://img.shields.io/badge/Tech%20Stack-7f1d1d?style=flat-square" /></a>
+  <a href="#-project-structure"><img src="https://img.shields.io/badge/Structure-b91c1c?style=flat-square" /></a>
+  <a href="#-getting-started"><img src="https://img.shields.io/badge/Getting%20Started-991b1b?style=flat-square" /></a>
+  <a href="#-demo-login-credentials"><img src="https://img.shields.io/badge/Demo%20Login-7f1d1d?style=flat-square" /></a>
+  <a href="#-developed-by"><img src="https://img.shields.io/badge/Developer-b91c1c?style=flat-square" /></a>
 </p>
 
 </div>
 
----
-
-## 📋 Table of Contents
-
-- [About the Project](#-about-the-project)
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Project Structure](#-project-structure)
-- [Getting Started](#-getting-started)
-- [Database Setup](#-database-setup)
-- [Demo Login Credentials](#-demo-login-credentials)
-- [Usage](#-usage)
-- [Roadmap](#-roadmap)
-- [Contributing](#-contributing)
-- [License](#-license)
-- [Developed By](#-developed-by)
+<br/>
 
 ---
 
 ## 🩹 About the Project
 
-**RaktSeva** ("Service of Blood") is a full-stack blood bank management system built to digitize and streamline blood donation, inventory tracking, and donor–recipient coordination for **Parul Sevashram Hospital**. It replaces manual registers with a secure, fast, and role-based digital platform for donors, hospital staff, and administrators.
+**RaktSeva** (রক্তসেবা — *Service of Blood*) is a web-based **Blood Bank & Donor Management System** built with **PHP** and **MySQL**. It digitizes and streamlines blood donor registration, blood group searching, and query/contact management for **Parul Sevashram Hospital**.
+
+The system offers two separate portals:
+- 🧑 **User Portal** — for donors and the public to register, search for blood, and contact the team
+- 🛡️ **Admin Portal** — for hospital staff to manage donors, queries, and page content
+
+<br/>
 
 ---
 
@@ -50,162 +67,170 @@
 
 <table>
 <tr>
-<td>
+<td width="50%" valign="top">
 
-**👤 User Side**
-- 🔐 User Registration & Session-based Login
-- 🩸 Register as a Blood Donor
-- 🔍 Search Donors by Blood Group
-- 🏥 Submit Blood Request (Need Blood form)
-- 📩 Contact Us / Send Queries
-- 📊 Personal User Dashboard
+### 👤 User Side
+| | Feature |
+|:---:|:---|
+| 🔐 | User Registration & Secure Session Login |
+| 🩸 | Register as a Blood Donor |
+| 🔍 | Search Donors by Blood Group |
+| 🏥 | Submit Blood Request (Need Blood) |
+| 📩 | Contact Us / Send Queries |
+| 📊 | Personal User Dashboard |
 
 </td>
-<td>
+<td width="50%" valign="top">
 
-**🛡️ Admin Side**
-- 🔑 Secure Admin Login with Session Guard
-- 📋 Admin Dashboard with Live Stats
-- 👥 Manage Donor List (Add / Delete)
-- 💬 View & Manage User Queries
-- ⏳ Pending Query Tracker
-- 📝 CMS — Edit Page Content (About, Why Donate, etc.)
-- 📞 Update Contact Information
-- 🔒 Change Admin Password
+### 🛡️ Admin Side
+| | Feature |
+|:---:|:---|
+| 🔑 | Secure Admin Login with Session Guard |
+| 📋 | Dashboard — Live Donor & Query Stats |
+| 👥 | Manage Donor List (Add / Delete) |
+| 💬 | View & Manage User Queries |
+| ⏳ | Pending Query Tracker |
+| 📝 | CMS — Edit Page Content (Rich Text) |
+| 📞 | Update Contact Information |
+| 🔒 | Change Admin Password |
 
 </td>
 </tr>
 <tr>
-<td colspan="2">
+<td colspan="2" align="center">
 
-**🌐 General**
-- 📱 Responsive UI (Bootstrap 4.6)
-- 🎠 Image Slider / Carousel on Home Page
-- 📰 Live News Ticker on Homepage
-- 🩺 Blood Group Information & Education Section
-- 🎨 Custom Red/Maroon Blood Bank Theme
-- ✏️ NicEdit Rich Text Editor for page content (Admin)
+### 🌐 General
+📱 Responsive UI (Bootstrap 4.6) &nbsp;|&nbsp; 🎠 Image Slider on Home &nbsp;|&nbsp; 📰 Live News Ticker &nbsp;|&nbsp; 🩺 Blood Group Education &nbsp;|&nbsp; 🎨 Custom Red/Maroon Theme &nbsp;|&nbsp; ✏️ NicEdit Rich Text Editor
 
 </td>
 </tr>
 </table>
 
+<br/>
+
 ---
 
 ## 🛠 Tech Stack
 
+<div align="center">
+
 | Layer | Technology |
-|---|---|
-| **Backend Language** | PHP (MySQLi extension) |
-| **Database** | MySQL (`blood_donation` database) |
-| **Frontend** | HTML5, CSS3 (Vanilla), JavaScript |
-| **CSS Framework** | Bootstrap 4.6 |
-| **Icons** | Font Awesome 6 |
-| **Rich Text Editor** | NicEdit (JavaScript) |
-| **Local Server** | XAMPP (Apache + MySQL) |
-| **jQuery** | jQuery 3.5.1 |
+|:---|:---|
+| 🔵 **Backend Language** | PHP (MySQLi extension) |
+| 🟠 **Database** | MySQL — `blood_donation` |
+| 🌐 **Frontend** | HTML5, CSS3 (Vanilla), JavaScript |
+| 💜 **CSS Framework** | Bootstrap 4.6 |
+| ⚡ **JavaScript Library** | jQuery 3.5.1 |
+| 🎨 **Icons** | Font Awesome 6 |
+| ✏️ **Rich Text Editor** | NicEdit.js |
+| 🖥️ **Local Server** | XAMPP (Apache + MySQL) |
+
+</div>
+
+<br/>
 
 ---
 
 ## 📁 Project Structure
 
 ```
-RaktSeva/
-├── 📄 home.php                  # Homepage with carousel, donors, blood groups
-├── 📄 about_us.php              # About Us page
-├── 📄 why_donate_blood.php      # Why Donate Blood page
-├── 📄 donate_blood.php          # Donor registration form (public)
-├── 📄 need_blood.php            # Request blood / need blood form
-├── 📄 search_blood_group.php    # Search donors by blood group
-├── 📄 contact_us.php            # Contact Us / Query form
-├── 📄 user_register.php         # User account registration
-├── 📄 user_login.php            # User login page
-├── 📄 user_dashboard.php        # User profile & donor status
-├── 📄 user_logout.php           # User session logout
-├── 📄 savedata.php              # Donor form data handler
-├── 📄 conn.php                  # Database connection (mysqli)
-├── 📄 head.php                  # Shared HTML head + navbar
-├── 📄 footer.php                # Shared footer
-├── 📄 slider.php                # Homepage image slider
-├── 📄 ticker.php                # News ticker component
+🩸 RaktSeva/
 │
-├── 📂 admin/                    # Admin panel (session protected)
-│   ├── 📄 login.php             # Admin login
-│   ├── 📄 dashboard.php         # Admin dashboard with stats
-│   ├── 📄 donor_list.php        # View & manage all donors
-│   ├── 📄 add_donor.php         # Add new donor manually
-│   ├── 📄 delete.php            # Delete donor record
-│   ├── 📄 query.php             # All user queries
-│   ├── 📄 pending_query.php     # Pending queries view
-│   ├── 📄 delete_query.php      # Delete a query
-│   ├── 📄 pages.php             # CMS — manage page content
-│   ├── 📄 update_page_details.php # Save page content changes
-│   ├── 📄 update_contact.php    # Update site contact info
-│   ├── 📄 change_password.php   # Change admin password
-│   ├── 📄 logout.php            # Admin session logout
-│   ├── 📄 session.php           # Session guard
-│   ├── 📄 sidebar.php           # Admin sidebar nav
-│   ├── 📄 header.php            # Admin header
-│   ├── 📄 admin.css             # Admin panel styles
-│   └── 📄 nicedit.js            # Rich text editor
+├── 📄 home.php                   ← Homepage: carousel, donors, blood groups
+├── 📄 about_us.php               ← About Us page
+├── 📄 why_donate_blood.php       ← Why Donate Blood
+├── 📄 donate_blood.php           ← Donor registration form (public)
+├── 📄 need_blood.php             ← Blood request / need blood
+├── 📄 search_blood_group.php     ← Search donors by blood group
+├── 📄 contact_us.php             ← Contact & Query form
+├── 📄 user_register.php          ← User account registration
+├── 📄 user_login.php             ← User login
+├── 📄 user_dashboard.php         ← User profile & donor status
+├── 📄 user_logout.php            ← Session logout
+├── 📄 savedata.php               ← Donor form submission handler
+├── 📄 conn.php                   ← DB connection (mysqli)
+├── 📄 head.php                   ← Shared HTML head + navbar
+├── 📄 footer.php                 ← Shared footer
+├── 📄 slider.php                 ← Homepage slider component
+├── 📄 ticker.php                 ← News ticker component
+│
+├── 📂 admin/                     ← Admin panel (session protected)
+│   ├── 📄 login.php              ← Admin login
+│   ├── 📄 dashboard.php          ← Live stats dashboard
+│   ├── 📄 donor_list.php         ← Manage donors
+│   ├── 📄 add_donor.php          ← Add donor manually
+│   ├── 📄 delete.php             ← Delete donor
+│   ├── 📄 query.php              ← All user queries
+│   ├── 📄 pending_query.php      ← Pending queries
+│   ├── 📄 delete_query.php       ← Delete query
+│   ├── 📄 pages.php              ← CMS page list
+│   ├── 📄 update_page_details.php← Save page content
+│   ├── 📄 update_contact.php     ← Update contact info
+│   ├── 📄 change_password.php    ← Change admin password
+│   ├── 📄 logout.php             ← Admin logout
+│   ├── 📄 session.php            ← Session guard
+│   ├── 📄 sidebar.php            ← Admin sidebar
+│   ├── 📄 header.php             ← Admin header
+│   ├── 🎨 admin.css              ← Admin styles
+│   └── 📜 nicedit.js             ← Rich text editor
 │
 ├── 📂 css/
-│   └── 📄 style.css             # Main frontend stylesheet
+│   └── 🎨 style.css              ← Main frontend stylesheet
 │
-├── 📂 image/                    # Project images & assets
+├── 📂 image/                     ← Project images & assets
 │
 ├── 📂 sql/
-│   └── 📄 blood_bank_database.sql  # Full database schema & seed data
+│   └── 📄 blood_bank_database.sql← Full DB schema + seed data
 │
-└── 📄 how_to_run.txt            # Step-by-step local setup guide
+└── 📄 how_to_run.txt             ← Step-by-step local setup guide
 ```
+
+<br/>
 
 ---
 
 ## 🚀 Getting Started
 
-This is a **PHP + MySQL** project — no Node.js or npm required. You need a local server like **XAMPP**.
+> ⚠️ This is a **PHP + MySQL** project. No Node.js or npm needed. Just **XAMPP**!
 
-### Prerequisites
-- [XAMPP](https://www.apachefriends.org/index.html) (Apache + MySQL)
-- A modern web browser (Chrome recommended)
+<br/>
 
-### Installation
+**Step 1 — Download & Install XAMPP**
 
-**Step 1 — Install & Start XAMPP**
-1. Download and install [XAMPP](https://www.apachefriends.org/index.html)
-2. Open the **XAMPP Control Panel**
-3. Start **Apache** and **MySQL** (both should show green)
+<a href="https://www.apachefriends.org/index.html">
+  <img src="https://img.shields.io/badge/Download%20XAMPP-FB7A24?style=for-the-badge&logo=xampp&logoColor=white" />
+</a>
+
+After installing, open **XAMPP Control Panel** → Start **Apache** + **MySQL** ✅
+
+<br/>
 
 **Step 2 — Copy Project to htdocs**
+
 ```
-Copy the RaktSeva folder to:
-C:\xampp\htdocs\RaktSeva
+📁 C:\xampp\htdocs\RaktSeva\
 ```
+
+<br/>
 
 **Step 3 — Import the Database**
 
-See the [Database Setup](#-database-setup) section below.
+```
+1. Open  →  http://localhost/phpmyadmin
+2. Click "New"  →  Name it: blood_donation  →  Create
+3. Select the database  →  Click "Import" tab
+4. Choose file  →  RaktSeva\sql\blood_bank_database.sql
+5. Click "Import" ✅
+```
 
-**Step 4 — Open in Browser**
+<br/>
+
+**Step 4 — Open in Browser** 🎉
+
 ```
 http://localhost/RaktSeva/home.php
 ```
 
----
-
-## 🗄 Database Setup
-
-1. Open your browser → go to `http://localhost/phpmyadmin`
-2. Click **"New"** in the left sidebar
-3. Name the database exactly: **`blood_donation`** → click **Create**
-4. Select the `blood_donation` database from the sidebar
-5. Click the **"Import"** tab
-6. Click **"Choose File"** and select:
-   ```
-   C:\xampp\htdocs\RaktSeva\sql\blood_bank_database.sql
-   ```
-7. Click **"Import"** at the bottom
 <br/>
 
 ---
@@ -234,7 +259,7 @@ http://localhost/RaktSeva/home.php
 
 <div align="center">
 
-> ⚠️ **For testing only.** Change these credentials before deploying to production.
+> ⚠️ **For testing only.** Change credentials before deploying to production.
 
 <table>
 <tr>
@@ -257,7 +282,7 @@ http://localhost/RaktSeva/home.php
 </tr>
 </table>
 
-> 💡 New users can also register at `/user_register.php` — passwords are hashed with PHP's `password_hash()`.
+> 💡 New users can register at `/user_register.php` — passwords are hashed with PHP `password_hash()`.
 
 </div>
 
@@ -272,84 +297,135 @@ http://localhost/RaktSeva/home.php
 <td valign="top" width="50%">
 
 ### 👤 As a User
-1. Visit `http://localhost/RaktSeva/home.php`
-2. **Register** an account at `/user_register.php`
-3. **Log in** at `/user_login.php` to access your personal dashboard
-4. **Donate Blood** — fill the donor form at `/donate_blood.php`
-5. **Need Blood** — search for donors at `/need_blood.php`
-6. **Contact Us** — send a query via `/contact_us.php`
+1. Go to `http://localhost/RaktSeva/home.php`
+2. **Register** at `/user_register.php`
+3. **Login** at `/user_login.php`
+4. **Donate Blood** → `/donate_blood.php`
+5. **Need Blood** → `/need_blood.php`
+6. **Contact** → `/contact_us.php`
 
-### As an Admin
-1. Visit `http://localhost/RaktSeva/admin/login.php`
-2. Log in with admin credentials
-3. **Dashboard** — view live counts of donors, queries, and pending messages
-4. **Donor List** — view, add, or delete donor records
-5. **Queries** — read and manage user submitted queries
-6. **Pages** — edit page content using the built-in rich text editor
-7. **Settings** — update contact info or change your password
+</td>
+<td valign="top" width="50%">
+
+### 🛡️ As an Admin
+1. Login at `/admin/login.php`
+2. **Dashboard** → view live stats
+3. **Donors** → manage donor records
+4. **Queries** → read & manage messages
+5. **Pages** → edit content via rich editor
+6. **Settings** → update contact / password
+
+</td>
+</tr>
+</table>
+
+<br/>
 
 ---
 
-## 🗺 Roadmap
+## 🗺️ Roadmap
 
-- [x] Admin Login with Session Protection
-- [x] User Registration & Login (Password Hashed)
-- [x] User Dashboard (Profile + Donor Status)
-- [x] Donor Registration Form (Public)
-- [x] Admin — Donor List Management (Add / Delete)
-- [x] Search Donors by Blood Group
-- [x] Contact Us / Query System with Pending Status
-- [x] CMS for Page Content (Admin editable)
-- [x] Responsive UI with Bootstrap 4.6
-- [ ] Email Notifications for Query Replies
-- [ ] SMS Alert for Blood Requests
-- [ ] Blood Inventory / Stock Tracking
-- [ ] Printable Donor Cards
+<table>
+<tr><td>✅</td><td>Admin Login with Session Protection</td></tr>
+<tr><td>✅</td><td>User Registration &amp; Login (Password Hashed)</td></tr>
+<tr><td>✅</td><td>Personal User Dashboard</td></tr>
+<tr><td>✅</td><td>Public Donor Registration Form</td></tr>
+<tr><td>✅</td><td>Admin Donor Management (Add / Delete)</td></tr>
+<tr><td>✅</td><td>Search Donors by Blood Group</td></tr>
+<tr><td>✅</td><td>Contact &amp; Query System (Read / Pending)</td></tr>
+<tr><td>✅</td><td>CMS — Admin-Editable Page Content</td></tr>
+<tr><td>✅</td><td>Responsive UI with Bootstrap 4.6</td></tr>
+<tr><td>🔜</td><td>Email Notifications for Query Replies</td></tr>
+<tr><td>🔜</td><td>SMS Alerts for Blood Requests</td></tr>
+<tr><td>🔜</td><td>Blood Inventory / Stock Tracking</td></tr>
+<tr><td>🔜</td><td>Printable Donor Cards</td></tr>
+</table>
+
+<br/>
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome!
-
 ```bash
-1. Fork the repository
-2. Create your feature branch (git checkout -b feature/AmazingFeature)
-3. Commit your changes (git commit -m 'Add some AmazingFeature')
-4. Push to the branch (git push origin feature/AmazingFeature)
-5. Open a Pull Request
+# 1. Fork this repository
+# 2. Create your feature branch
+git checkout -b feature/AmazingFeature
+
+# 3. Commit your changes
+git commit -m "Add AmazingFeature"
+
+# 4. Push to the branch
+git push origin feature/AmazingFeature
+
+# 5. Open a Pull Request 🎉
 ```
+
+<br/>
 
 ---
 
 ## 📄 License
 
-Distributed under the **MIT License**. See `LICENSE` for more information.
+Distributed under the **MIT License**. See `LICENSE` for more details.
+
+<br/>
 
 ---
 
 ## 👨‍💻 Developed By
 
-**Engr Shuvo Das**
+<div align="center">
 
-| Platform | Link |
-| :--- | :--- |
-| **WhatsApp** | [Chat Now](https://wa.me/+919641700503) |
-| **LinkedIn** | [Profile](https://www.linkedin.com/in/engrshuvoda/) |
-| **YouTube** | [Channel](https://www.youtube.com/channel/UCEJ0R871tF2PLT27q9azYWg) |
-| **GitHub** | [Repositories](https://github.com/engrshuvodas) |
-| **Fiverr** | [Hire Me](https://www.fiverr.com/shuvo_das74886) |
-| **Portfolio** | [About Me](https://engrshuvodas.github.io/me/) |
-| **Email** | [engrshuvoda@gmail.com](mailto:engrshuvoda@gmail.com) |
-| **X (Twitter)** | [@engrshuvodas](https://x.com/engrshuvodas) |
-| **Facebook** | [Engr Shuvo](https://www.facebook.com/engr.shuvo74886/) |
+### Engr Shuvo Das
 
-<h4 align="center">🧑‍💻 Developed with dedication by 
+<p>
+  <a href="https://wa.me/+919641700503">
+    <img src="https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" />
+  </a>
+  &nbsp;
+  <a href="https://www.linkedin.com/in/engrshuvoda/">
+    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" />
+  </a>
+  &nbsp;
+  <a href="https://github.com/engrshuvodas">
+    <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" />
+  </a>
+  &nbsp;
+  <a href="https://www.fiverr.com/shuvo_das74886">
+    <img src="https://img.shields.io/badge/Fiverr-1DBF73?style=for-the-badge&logo=fiverr&logoColor=white" />
+  </a>
+</p>
+<p>
+  <a href="https://www.youtube.com/channel/UCEJ0R871tF2PLT27q9azYWg">
+    <img src="https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white" />
+  </a>
+  &nbsp;
+  <a href="https://engrshuvodas.github.io/me/">
+    <img src="https://img.shields.io/badge/Portfolio-000000?style=for-the-badge&logo=About.me&logoColor=white" />
+  </a>
+  &nbsp;
+  <a href="mailto:engrshuvoda@gmail.com">
+    <img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" />
+  </a>
+  &nbsp;
+  <a href="https://x.com/engrshuvodas">
+    <img src="https://img.shields.io/badge/X%20Twitter-000000?style=for-the-badge&logo=x&logoColor=white" />
+  </a>
+  &nbsp;
+  <a href="https://www.facebook.com/engr.shuvo74886/">
+    <img src="https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white" />
+  </a>
+</p>
+
+<br/>
+
+<h4>🧑‍💻 Developed with ❤️ and dedication by
   <a href="https://engrshuvodas.github.io/SHUVO-_portfolio/" target="_blank">Engr Shuvo Das</a>
 </h4>
 
-<div align="center">
+<br/>
 
-⭐ **If you find this project helpful, don't forget to star the repo!** ⭐
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=b91c1c&height=130&section=footer&text=%E2%AD%90%20Star%20this%20Repo%20if%20it%20helped%20you!&fontSize=20&fontColor=ffffff&fontAlignY=65&animation=fadeIn" />
 
 </div>
