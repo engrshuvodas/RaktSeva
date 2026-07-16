@@ -1,0 +1,1457 @@
+================================================================================
+        RAKTSEVA - BLOOD BANK AND DONOR MANAGEMENT SYSTEM
+                COMPLETE USER MANUAL AND DOCUMENTATION
+================================================================================
+Project  : RaktSeva  (meaning: Service of Blood)
+Version  : 1.0
+Tech     : PHP 8.x + MySQL + Bootstrap 4.6 + jQuery 3.5.1 + Font Awesome 6
+Author   : Engr Shuvo Das   (engrshuvoda@gmail.com)
+Hospital : Parul Sevashram Hospital
+License  : MIT
+================================================================================
+
+TABLE OF CONTENTS
+-----------------
+PART 1  - PROJECT OVERVIEW
+PART 2  - SETUP GUIDE (How to run locally)
+PART 3  - USER PORTAL (Every public page explained in detail)
+PART 4  - ADMIN PORTAL (Every admin page explained in detail)
+PART 5  - DATABASE SCHEMA (All 7 tables with columns)
+PART 6  - FILE STRUCTURE (Every file and its purpose)
+PART 7  - USER EXPERIENCE FLOWS (4 complete journeys)
+PART 8  - SECURITY ANALYSIS
+PART 9  - COMMON ERRORS AND FIXES
+PART 10 - FUTURE ROADMAP
+PART 11 - DEVELOPER NOTES
+
+
+================================================================================
+PART 1 - PROJECT OVERVIEW
+================================================================================
+
+WHAT IS RAKTSEVA?
+-----------------
+RaktSeva is a web-based Blood Bank and Donor Management System.
+It was built for Parul Sevashram Hospital to replace manual, phone-based
+blood coordination with a digital, organized system.
+
+The system allows:
+  - Blood donors to register online
+  - People in need to search for donors by blood group instantly
+  - Users to contact the hospital team via an online form
+  - Admin/hospital staff to manage everything from a secure panel
+  - Admin to edit public website content without touching code (CMS)
+
+It runs on a LAMP-style local server (XAMPP = Apache + MySQL + PHP).
+No Node.js, no npm, no Composer required.
+
+PURPOSE AND MISSION
+-------------------
+"Saving lives, one donation at a time."
+
+The system digitizes the entire blood donation workflow:
+  BEFORE RaktSeva: People called hospitals, hospitals searched paper records,
+                   donors were contacted manually. Slow and error-prone.
+
+  AFTER RaktSeva:  Public website shows live donor cards. Search by blood
+                   group in seconds. Contact form goes straight to admin inbox.
+                   Admin sees everything in one dashboard.
+
+THE TWO PORTALS
+---------------
+RaktSeva has two completely separate sections:
+
+  PORTAL 1 - PUBLIC WEBSITE (for general users)
+  URL: http://localhost/RaktSeva/home.php
+  Anyone can use this. No login required for many features.
+  Registered users get a personal dashboard.
+
+  PORTAL 2 - ADMIN PANEL (for hospital staff only)
+  URL: http://localhost/RaktSeva/admin/login.php
+  Password protected. Only admin username/password holders can enter.
+  Full management control of the entire system.
+
+TECH STACK
+----------
+  Backend       : PHP 8.x (server-side logic, forms, sessions, DB queries)
+  Database      : MySQL (blood_donation database, 7 tables)
+  DB Library    : MySQLi (mysqli_connect, mysqli_query, mysqli_fetch_assoc)
+  Frontend      : HTML5, CSS3, Vanilla JavaScript
+  CSS Framework : Bootstrap 4.6.2 (responsive grid, components)
+  JS Library    : jQuery 3.5.1 (DOM, Bootstrap components)
+  Icons         : Font Awesome 6.4.0 (all icons)
+  Rich Editor   : NicEdit.js (admin CMS content editing, WYSIWYG)
+  Server        : XAMPP (Apache + MySQL, local development)
+  Sessions      : PHP native sessions (_SESSION superglobal)
+  Password Hash : PHP password_hash() using bcrypt (for user accounts)
+
+
+================================================================================
+PART 2 - SETUP GUIDE (How to Run Locally)
+================================================================================
+
+REQUIREMENTS
+------------
+  YES: XAMPP (PHP 8.x, Apache, MySQL)  -- https://www.apachefriends.org/
+  YES: Any modern browser (Chrome recommended)
+  YES: RaktSeva project folder
+  NO:  Node.js, npm, Composer -- not needed at all
+
+STEP 1 - START XAMPP
+---------------------
+  1. Open XAMPP Control Panel
+  2. Start Apache  (green = running)
+  3. Start MySQL   (green = running)
+
+STEP 2 - PLACE PROJECT IN HTDOCS
+----------------------------------
+  Copy the RaktSeva folder to:
+    C:\xampp\htdocs\RaktSeva\
+
+  So your files are at:
+    C:\xampp\htdocs\RaktSeva\home.php
+    C:\xampp\htdocs\RaktSeva\admin\login.php
+    C:\xampp\htdocs\RaktSeva\conn.php
+    ...and all other files
+
+STEP 3 - CREATE AND IMPORT DATABASE
+-------------------------------------
+  1. Open: http://localhost/phpmyadmin
+  2. Left sidebar > click "New"
+  3. Database name: blood_donation > click Create
+  4. Click "blood_donation" in left sidebar (select it)
+  5. Click "Import" tab at the top
+  6. Click "Choose File"
+  7. Select: C:\xampp\htdocs\RaktSeva\sql\blood_bank_database.sql
+  8. Click "Import" button
+  9. Success message appears
+
+STEP 4 - VERIFY DATABASE CONNECTION
+-------------------------------------
+  Open: C:\xampp\htdocs\RaktSeva\conn.php
+  File contains:
+    $conn = mysqli_connect("localhost","root","","blood_donation")
+
+  Default XAMPP credentials:
+    Host:     localhost
+    User:     root
+    Password: (empty - no password)
+    Database: blood_donation
+
+  If you set a MySQL password in XAMPP, add it as the 3rd parameter.
+  Also update: C:\xampp\htdocs\RaktSeva\admin\conn.php (same credentials)
+
+STEP 5 - OPEN IN BROWSER
+--------------------------
+  Public Website:  http://localhost/RaktSeva/home.php
+  Admin Panel:     http://localhost/RaktSeva/admin/login.php
+
+KNOWN BUG - FIX BEFORE USING
+------------------------------
+  File: RaktSeva\savedata.php (donor form processor)
+  Problem: Line 13 has old folder name:
+    header("Location: http://localhost/BDMS/home.php");
+  Fix: Change BDMS to RaktSeva:
+    header("Location: http://localhost/RaktSeva/home.php");
+
+DEFAULT LOGIN CREDENTIALS
+--------------------------
+  Role    | Login           | Password
+  --------+-----------------+-----------
+  Admin   | admin           | admin
+  User    | Shuvo@gmail.com | password
+
+  WARNING: Change the admin password after first login!
+  Admin Panel > sidebar > Change Password
+
+
+================================================================================
+PART 3 - USER PORTAL (PUBLIC WEBSITE)
+================================================================================
+
+All public pages share the same navbar and footer.
+Navbar: RaktSeva logo + Home | Donate Blood | Need Blood | About Us |
+        Why Donate | Contact Us | (Login/Register OR Welcome+Dashboard+Logout)
+Footer: RaktSeva tagline + page links + copyright year (auto-updated by PHP)
+
+------------------------------------------------------------------------
+PAGE 3.1 - HOME PAGE
+File: home.php
+URL:  http://localhost/RaktSeva/home.php
+------------------------------------------------------------------------
+
+This is the main landing page. It has 9 distinct sections:
+
+[A] NEWS TICKER (very top, above navbar)
+    - Full-width red bar with scrolling text
+    - Text slides from RIGHT to LEFT continuously
+    - CSS animation: @keyframes tickerScroll, 30s, linear, infinite
+    - Left side: static red label "Latest Updates" with RSS icon
+    - Right side: scrolling announcement text
+    - Current message (hardcoded in ticker.php):
+      "First blood donation camp to be organised by RaktSeva in
+       collaboration with Blood Bank & Donation Management System -
+       Come and be a part of this noble cause!"
+    - To change text: edit ticker.php, find ticker-content div
+
+[B] NAVBAR
+    - Logo: droplet icon + RaktSeva text
+    - Nav links: Home, Donate Blood, Need Blood, About Us, Why Donate, Contact
+    - Active page highlighted automatically
+    - If NOT logged in: Login button + Register button (right side)
+    - If LOGGED IN: "Welcome [Name]" + My Dashboard + Logout (right side)
+    - Collapses to hamburger menu on mobile screens
+
+[C] IMAGE CAROUSEL
+    - Bootstrap slider with 2 blood donation images
+    - Auto-rotates between slides
+    - Left/right arrow controls + dot indicators
+    - Height: 450px
+    - Images located in: RaktSeva/image/ folder
+
+[D] WELCOME HEADING
+    - "Welcome to RaktSeva"
+    - "Blood Bank & Donor Management System"
+
+[E] THREE INFO CARDS (content from database - admin editable)
+    Card 1: "The need for blood"   (page_type = 'needforblood')
+    Card 2: "Blood Tips"           (page_type = 'bloodtips')
+    Card 3: "Who you could Help"   (page_type = 'whoyouhelp')
+    - Content loaded from pages table in MySQL
+    - Admin can change content via Admin Panel > Pages > Edit
+    - Each card has scrollable body (160px height limit)
+
+[F] RECENT DONORS SECTION - "Our Heroes"
+    - Shows 6 RANDOM donors from donor_details table
+    - SQL: SELECT ... JOIN blood ... ORDER BY RAND() LIMIT 6
+    - Refreshes with different donors each page load
+    - Each donor card shows:
+        Photo    : blood_drop_logo.jpg (same default for all donors)
+        Name     : donor's full name (bold)
+        Badge    : blood group in red pill (e.g., A+, O-)
+        Phone    : donor's mobile number
+        Details  : gender and age (e.g., Male, 28 yrs)
+        Location : donor's address
+
+[G] BLOOD GROUPS SECTION
+    - Left: "Learn - Blood Groups" heading
+    - Content from CMS (page_type = 'bloodgroups')
+    - Right: blood_donationcover.jpeg image
+
+[H] UNIVERSAL DONORS AND RECIPIENTS
+    - Title + content from CMS (page_type = 'universal')
+    - Call-to-action button: "Become a Donor" >> donate_blood.php
+    - White card with border and shadow
+
+[I] FOOTER
+    - Tagline: "Connecting blood donors with those in need."
+    - Links: Home | About Us | Donate Blood | Need Blood | Contact Us
+    - Admin link (subtle, low opacity): lock icon + Admin
+    - Copyright: auto-updates year using PHP date('Y')
+
+------------------------------------------------------------------------
+PAGE 3.2 - USER REGISTRATION
+File: user_register.php
+URL:  http://localhost/RaktSeva/user_register.php
+------------------------------------------------------------------------
+
+PURPOSE: Create a new personal account on RaktSeva.
+         After registration, users can login and see their personal dashboard.
+         Registration unlocks the dashboard (donor status tracking).
+
+AUTO-REDIRECT: If already logged in, page auto-redirects to dashboard.
+
+FORM FIELDS:
+  Full Name        (required) - stored in users.full_name
+  Email Address    (required) - used as login; validated for format
+  Mobile Number    (optional) - stored in users.mobile
+  Blood Group      (optional) - dropdown; stored in users.blood_group
+                                Options: A+, A-, B+, B-, AB+, AB-, O+, O-
+  Password         (required) - minimum 6 characters; hashed with bcrypt
+  Confirm Password (required) - must exactly match Password
+
+VALIDATION (PHP server-side):
+  1. All required fields must be filled
+  2. Email must pass FILTER_VALIDATE_EMAIL check
+  3. Password must be at least 6 characters
+  4. Password and Confirm Password must match
+  5. Email must not already exist in users table
+
+ERROR MESSAGES SHOWN:
+  "Please fill in all required fields."
+  "Invalid email address."
+  "Password must be at least 6 characters."
+  "Passwords do not match."
+  "An account with this email already exists."
+
+SUCCESS MESSAGE:
+  "Account created successfully! You can now Login."
+  (Login link inside success alert)
+
+WHAT HAPPENS IN DATABASE:
+  - password_hash($password, PASSWORD_DEFAULT) creates bcrypt hash
+  - INSERT INTO users (full_name, email, password, mobile, blood_group)
+  - users.created_at timestamp auto-set
+
+LINKS ON PAGE:
+  "Already have an account? Login here" >> user_login.php
+  "Back to Home" arrow                  >> home.php
+
+------------------------------------------------------------------------
+PAGE 3.3 - USER LOGIN
+File: user_login.php
+URL:  http://localhost/RaktSeva/user_login.php
+------------------------------------------------------------------------
+
+PURPOSE: Registered users enter their email and password to access
+         their personal dashboard and features.
+
+AUTO-REDIRECT: Already logged-in users are sent to dashboard immediately.
+
+FORM FIELDS:
+  Email    (required) - must match a record in users table
+  Password (required) - verified using password_verify() against bcrypt hash
+
+LOGIN PROCESS (step by step):
+  1. User submits email + password
+  2. PHP runs mysqli_real_escape_string on email for safety
+  3. SQL: SELECT * FROM users WHERE email='[submitted email]'
+  4. If user found in DB: password_verify(input, stored_hash) called
+  5. If bcrypt verification passes:
+       _SESSION['user_loggedin'] = true
+       _SESSION['user_id']       = user's ID from DB
+       _SESSION['user_name']     = user's full name
+       _SESSION['user_email']    = user's email
+       Redirect to user_dashboard.php
+  6. If any step fails: error message shown on same page
+
+ERROR MESSAGES:
+  "Please enter both email and password."
+  "No account found with this email."
+  "Incorrect email or password."
+
+LINKS ON PAGE:
+  "Don't have an account? Register here" >> user_register.php
+  "Back to Home" arrow                   >> home.php
+  "Admin Login" lock icon                >> admin/login.php
+
+------------------------------------------------------------------------
+PAGE 3.4 - USER DASHBOARD
+File: user_dashboard.php
+URL:  http://localhost/RaktSeva/user_dashboard.php
+------------------------------------------------------------------------
+
+ACCESS: LOGIN REQUIRED.
+        Without login > immediate redirect to user_login.php
+
+PURPOSE: The personal home for a logged-in user. Shows their account
+         details and donor registration status in one place.
+
+SECTION A - WELCOME BANNER
+  Dark gradient (navy to dark blue) full-width banner
+  "Welcome, [Name]!" - name pulled from _SESSION['user_name']
+  Blood group badge shown if user selected blood group at registration
+  Subtitle: "Manage your RaktSeva profile and donor information."
+
+SECTION B - THREE STAT CARDS (status at a glance)
+
+  Card 1: Account Active
+    Icon: user-check
+    Shows month and year when account was created
+    Example: "Since Jul 2025"
+
+  Card 2: Donor Status
+    Icon: hand-holding-droplet (red)
+    PHP checks: SELECT from donor_details WHERE donor_mail = user's email
+    Result A: "Registered Donor" in red text (email found in donor_details)
+    Result B: "Not Registered" in gray text (email not in donor_details)
+
+  Card 3: Profile Completeness
+    Icon: clipboard-check (blue)
+    If users.mobile has a value: shows "Complete"
+    If users.mobile is empty: shows "Needs Update"
+
+SECTION C - ACCOUNT INFORMATION CARD (left column)
+  All data from users table:
+    Full Name   : users.full_name
+    Email       : users.email
+    Mobile      : users.mobile (or "Not provided" if empty)
+    Blood Group : users.blood_group (or "Not provided" if empty)
+    Joined      : formatted date e.g. "15 Jul 2025" from users.created_at
+
+SECTION D - DONOR STATUS CARD (right column)
+  If user IS in donor_details (email match):
+    Donor Name   : donor_details.donor_name
+    Blood Group  : large red bold text e.g. "O+"
+    Age          : donor_details.donor_age years
+    Gender       : donor_details.donor_gender
+    Mobile       : donor_details.donor_number
+    Address      : donor_details.donor_address
+
+  If user is NOT in donor_details:
+    Large gray stethoscope icon
+    "Not Registered as Donor"
+    "Your donation could save up to 3 lives."
+    Red button: "Become a Donor" >> donate_blood.php
+
+SECTION E - QUICK ACTIONS BAR
+  Three buttons side by side:
+    [Register as Donor]  >> donate_blood.php
+    [Search for Blood]   >> need_blood.php
+    [Contact Us]         >> contact_us.php
+
+------------------------------------------------------------------------
+PAGE 3.5 - DONATE BLOOD (Public Donor Registration)
+Form file:    donate_blood.php
+Handler file: savedata.php
+URL:  http://localhost/RaktSeva/donate_blood.php
+------------------------------------------------------------------------
+
+PURPOSE: Register as a blood donor. Anyone can use this page - no
+         account or login required. Data goes to donor_details table.
+
+PAGE HEADER: Red gradient banner. "Donate Blood"
+             "Register as a blood donor and help save lives."
+
+FORM FIELDS:
+  Full Name     (required) - text input
+  Mobile Number (required) - text input
+  Email Id      (optional) - email input; can be left blank
+  Age           (required) - text input; age in years
+  Gender        (required) - select: Male / Female
+  Blood Group   (required) - select; loaded from blood table in MySQL
+                             Options: A+, A-, B+, B-, O+, O-, AB+, AB-
+  Address       (required) - textarea; full home address
+
+HOW BLOOD GROUP DROPDOWN IS POPULATED:
+  PHP query: SELECT * FROM blood
+  Each row creates an option: value=blood_id, label=blood_group
+  So "A+" has value 1, "A-" has value 2, etc.
+  The ID is stored in donor_blood column, not the text
+
+FORM ACTION: savedata.php (POST method)
+
+WHAT savedata.php DOES:
+  1. Reads all POST values
+  2. Connects to database
+  3. SQL: INSERT INTO donor_details (donor_name, donor_number, donor_mail,
+          donor_age, donor_gender, donor_blood, donor_address)
+          VALUES('[name]','[number]','[email]','[age]','[gender]',
+                 '[blood_id]','[address]')
+  4. Redirects to home page
+
+IMPORTANT BUG IN savedata.php:
+  Current line 13: header("Location: http://localhost/BDMS/home.php");
+  FIX NEEDED:      header("Location: http://localhost/RaktSeva/home.php");
+  Otherwise after submitting the form, user gets a 404 error.
+
+------------------------------------------------------------------------
+PAGE 3.6 - NEED BLOOD (Search for Donors)
+File: need_blood.php
+URL:  http://localhost/RaktSeva/need_blood.php
+------------------------------------------------------------------------
+
+PURPOSE: Find blood donors quickly by blood group.
+         NO LOGIN NEEDED. Emergency-use page.
+
+PAGE HEADER: Dark gradient banner. "Need Blood"
+             "Search for available blood donors in your area."
+
+SEARCH FORM:
+  Blood Group (required) - dropdown from blood table (A+, A-, B+, etc.)
+  Reason      (required) - text: why you need blood (surgery, accident, etc.)
+  [Search] button
+
+HOW SEARCH WORKS:
+  1. Form submits to same page (POST to need_blood.php)
+  2. PHP checks if 'search' was submitted
+  3. SQL runs:
+       SELECT * FROM donor_details
+       JOIN blood ON donor_details.donor_blood = blood.blood_id
+       WHERE donor_blood = '[selected blood_id]'
+       ORDER BY RAND()
+       LIMIT 6
+  4. Results displayed as donor cards below the form
+
+RESULT DONOR CARDS (each shows):
+  Default photo (blood_drop_logo.jpg)
+  Donor name
+  Blood group badge (red pill)
+  Phone number (contact the donor directly)
+  Gender and age
+  Address
+
+IF NO RESULTS:
+  Red alert box: "No Donor Found For your search Blood group."
+
+LIMITATIONS:
+  - Shows max 6 random donors (not all matches)
+  - No city/location filter (future feature)
+  - The "reason" field is for UX only; it is NOT saved to database
+
+------------------------------------------------------------------------
+PAGE 3.7 - CONTACT US
+File: contact_us.php
+URL:  http://localhost/RaktSeva/contact_us.php
+------------------------------------------------------------------------
+
+PURPOSE: Send a message or query to the hospital team.
+         No login needed. Messages go into database for admin to read.
+
+PAGE HEADER: Dark gradient banner. "Contact Us"
+
+LEFT SIDE - MESSAGE FORM (8 of 12 Bootstrap columns):
+  Full Name     (required) - text
+  Phone Number  (required) - tel type
+  Email Address (required) - email type
+  Message       (required) - textarea; max 999 characters
+  [Send Message] button
+
+WHEN SEND IS CLICKED:
+  1. PHP reads POST values
+  2. SQL: INSERT INTO contact_query
+          (query_name, query_mail, query_number, query_message)
+          VALUES('[name]','[email]','[phone]','[message]')
+  3. query_status gets default value of 2 (Pending) from DB schema
+  4. query_date gets current timestamp automatically
+  5. Green success alert shown: "Query Sent! We will contact you shortly."
+
+RIGHT SIDE - HOSPITAL CONTACT INFO (4 of 12 Bootstrap columns):
+  Data pulled from contact_info table (WHERE contact_id = 1):
+    Address : contact_info.contact_address
+    Phone   : contact_info.contact_phone
+    Email   : contact_info.contact_mail (as mailto: hyperlink)
+  Admin can update this info from Admin Panel > Update Contact
+
+------------------------------------------------------------------------
+PAGE 3.8 - ABOUT US
+File: about_us.php
+URL:  http://localhost/RaktSeva/about_us.php
+------------------------------------------------------------------------
+Information page about RaktSeva and the hospital initiative.
+Content loaded from pages table in database (admin editable via CMS).
+Shares same navbar and footer as all other public pages.
+
+------------------------------------------------------------------------
+PAGE 3.9 - WHY DONATE BLOOD
+File: why_donate_blood.php
+URL:  http://localhost/RaktSeva/why_donate_blood.php
+------------------------------------------------------------------------
+Educational page about the importance and benefits of donating blood.
+Content loaded from pages table in database (admin editable via CMS).
+Covers eligibility, health benefits, common myths, etc.
+
+------------------------------------------------------------------------
+PAGE 3.10 - USER LOGOUT
+File: user_logout.php
+URL:  http://localhost/RaktSeva/user_logout.php
+------------------------------------------------------------------------
+Destroys the user's session and redirects to home page.
+Code: session_start() > session_destroy() > header(Location: home.php)
+
+After logout:
+  - User is fully signed out
+  - Dashboard redirects back to login page
+  - Navbar shows Login and Register buttons again
+
+------------------------------------------------------------------------
+PAGE 3.11 - NEWS TICKER COMPONENT
+File: ticker.php (included inside home.php)
+------------------------------------------------------------------------
+Red scrolling announcement bar at the top of the home page.
+CSS animation only (no JavaScript required).
+
+Animation details:
+  @keyframes tickerScroll
+  from: translateX(0)
+  to:   translateX(-100%)
+  Duration: 30 seconds, linear timing, infinite loop
+
+HTML structure:
+  .news-ticker  (red bar, full width, flex layout)
+    .ticker-label   (static red: "Latest Updates" with RSS icon)
+    overflow:hidden div
+      .ticker-content  (the scrolling text - padding-left: 100% trick)
+
+To change ticker text: open ticker.php, edit the text in .ticker-content div
+Future plan: make text editable via Admin CMS panel
+
+
+================================================================================
+PART 4 - ADMIN PORTAL
+================================================================================
+
+BASE URL: http://localhost/RaktSeva/admin/
+
+The admin panel is a separate, secured area of the website with:
+  - Its own login (separate from user login)
+  - Session protection (session.php included on every admin page)
+  - Its own CSS design (admin.css - dark sidebar, professional layout)
+  - Left sidebar navigation
+
+ADMIN SIDEBAR MENU ITEMS:
+  Dashboard
+  Donors
+    View Donors
+    Add Donor
+  Queries
+    All Queries
+    Pending Queries
+  Pages (CMS)
+  Update Contact
+  Change Password
+  Logout
+
+------------------------------------------------------------------------
+ADMIN PAGE 4.1 - ADMIN LOGIN
+File: admin/login.php
+URL:  http://localhost/RaktSeva/admin/login.php
+------------------------------------------------------------------------
+
+The gateway to the admin panel. Completely separate from user login.
+
+FORM FIELDS:
+  Username (text field with person icon)
+  Password (password field with lock icon)
+  [Login to Dashboard] submit button
+
+AUTHENTICATION PROCESS:
+  1. Form POST submitted
+  2. PHP escapes both fields
+  3. SQL: SELECT * FROM admin_info
+          WHERE admin_username='[user]' AND admin_password='[pass]'
+  4. If rows returned > 0 (match found):
+       _SESSION['loggedin'] = true
+       _SESSION['username'] = username value
+       header(Location: dashboard.php)
+  5. If no match: "Username and Password do not match!"
+
+SESSION GUARD SYSTEM:
+  Every admin page includes session.php at the top.
+  session.php checks: if _SESSION['loggedin'] !== true then redirect to login
+  This means you cannot access any admin page without being logged in.
+
+SECURITY ISSUE (known):
+  Admin passwords are stored as PLAIN TEXT in the admin_info table.
+  This is different from user passwords (which use bcrypt).
+  Fix planned: add password_hash() to admin login system.
+
+DEFAULT CREDENTIALS: username=admin, password=admin
+
+------------------------------------------------------------------------
+ADMIN PAGE 4.2 - ADMIN DASHBOARD
+File: admin/dashboard.php
+URL:  http://localhost/RaktSeva/admin/dashboard.php
+------------------------------------------------------------------------
+
+The main control panel. Shows 3 live statistics cards at a glance.
+
+STAT CARD 1: Blood Donors Available (RED theme)
+  SQL: SELECT * FROM donor_details (counts total rows)
+  Shows total number of registered blood donors
+  "View Details" link >> donor_list.php
+
+STAT CARD 2: All User Queries (BLUE theme)
+  SQL: SELECT * FROM contact_query (counts total rows)
+  Shows total messages ever received from users
+  "View Details" link >> query.php
+
+STAT CARD 3: Pending Queries (ORANGE/WARNING theme)
+  SQL: SELECT * FROM contact_query WHERE query_status=2
+  Shows unread/pending messages that need admin attention
+  "View Details" link >> pending_query.php
+
+All counts are live (re-queried every time the page loads).
+
+------------------------------------------------------------------------
+ADMIN PAGE 4.3 - DONOR LIST
+File: admin/donor_list.php
+URL:  http://localhost/RaktSeva/admin/donor_list.php
+------------------------------------------------------------------------
+
+Full list of all registered blood donors in a paginated table.
+
+TABLE COLUMNS:
+  S.no | Name | Mobile | Email | Age | Gender | Blood Group | Address | Action
+
+PAGINATION SYSTEM:
+  10 donors per page
+  URL parameter: donor_list.php?page=1, ?page=2, etc.
+  SQL: SELECT ... LIMIT [offset],[limit]
+  Shows Prev / numbered pages / Next links when more than 1 page
+  Offset calculation: ($page - 1) * 10
+
+BLOOD GROUP COLUMN:
+  Shows as small red pill badge (e.g., "A+")
+  Fetched via JOIN: donor_details JOIN blood ON donor_blood = blood_id
+
+ADDRESS COLUMN:
+  Truncated (max-width: 180px, overflow hidden, ellipsis)
+  Hover to see full address (HTML title attribute)
+
+DELETE ACTION:
+  Red "Delete" button with trash icon
+  Clicking triggers: onclick="return confirm('Delete this donor?')"
+  If confirmed: navigates to delete.php?id=[donor_id]
+
+------------------------------------------------------------------------
+ADMIN PAGE 4.4 - ADD DONOR
+Form file:    admin/add_donor.php
+Handler file: admin/save_donor_data.php
+URL:  http://localhost/RaktSeva/admin/add_donor.php
+------------------------------------------------------------------------
+
+Allows admin to manually add a blood donor without using the public form.
+Useful for adding offline/walk-in registrations.
+
+FORM FIELDS (same as public donate_blood.php):
+  Full Name * | Mobile Number * | Email (optional)
+  Age *       | Gender *        | Blood Group *
+  Address *
+
+On submit: save_donor_data.php runs INSERT INTO donor_details(...)
+Then redirects to donor_list.php
+
+------------------------------------------------------------------------
+ADMIN PAGE 4.5 - DELETE DONOR
+File: admin/delete.php
+URL:  admin/delete.php?id=[donor_id]
+------------------------------------------------------------------------
+
+Receives donor_id from URL GET parameter.
+Runs: DELETE FROM donor_details WHERE donor_id='[id]'
+Redirects back to donor_list.php
+
+WARNING: Deletion is PERMANENT. No undo. No recycle bin.
+JavaScript confirm popup shown before deletion executes.
+
+------------------------------------------------------------------------
+ADMIN PAGE 4.6 - ALL QUERIES
+File: admin/query.php
+URL:  http://localhost/RaktSeva/admin/query.php
+------------------------------------------------------------------------
+
+Shows ALL messages submitted through the Contact Us form.
+Admin can read them, mark as read, or delete them.
+
+TABLE COLUMNS:
+  S.no | Name | Email | Mobile | Message | Date | Status | Action
+
+STATUS SYSTEM:
+  status = 1 (Read)    : Green badge with checkmark "Read"
+  status = 2 (Pending) : Yellow CLICKABLE badge with clock "Pending"
+
+MARK AS READ:
+  Click yellow "Pending" badge on any row
+  JavaScript confirm: "Mark as read?"
+  URL: query.php?mark_read=[query_id]
+  PHP: UPDATE contact_query SET query_status='1' WHERE query_id=[id]
+  Page reloads with updated status
+
+DELETE:
+  Red Delete button
+  Confirm popup
+  Goes to delete_query.php?id=[query_id]
+
+PAGINATION: 10 per page (same system as donor list)
+
+------------------------------------------------------------------------
+ADMIN PAGE 4.7 - PENDING QUERIES
+File: admin/pending_query.php
+URL:  http://localhost/RaktSeva/admin/pending_query.php
+------------------------------------------------------------------------
+
+FILTERED VIEW: Shows ONLY unread queries (WHERE query_status=2).
+Quick daily check tool - only see what needs attention.
+
+Difference from query.php:
+  SQL adds filter: WHERE query_status=2
+  Empty message when all resolved: "No pending queries."
+
+Same features: mark as read, delete, pagination.
+
+------------------------------------------------------------------------
+ADMIN PAGE 4.8 - DELETE QUERY
+File: admin/delete_query.php
+URL:  admin/delete_query.php?id=[query_id]
+------------------------------------------------------------------------
+
+Receives query_id from URL.
+SQL: DELETE FROM contact_query WHERE query_id='[id]'
+Redirects to query.php
+
+WARNING: Permanent deletion. Cannot be undone.
+
+------------------------------------------------------------------------
+ADMIN PAGE 4.9 - MANAGE PAGES (CMS)
+File: admin/pages.php
+URL:  http://localhost/RaktSeva/admin/pages.php
+------------------------------------------------------------------------
+
+Lists all CMS pages stored in the pages table.
+Admin can see every editable section of the public website.
+
+TABLE COLUMNS:
+  S.no | Page Name | Page Type | Content Preview | Edit button
+
+PAGE TYPES AND WHERE THEY APPEAR ON PUBLIC SITE:
+  needforblood -> Home page: "The need for blood" card
+  bloodtips    -> Home page: "Blood Tips" card
+  whoyouhelp   -> Home page: "Who you could Help" card
+  bloodgroups  -> Home page: Blood Groups section
+  universal    -> Home page: Universal Donors section
+  (others)     -> About Us page, Why Donate page, etc.
+
+CONTENT PREVIEW: Strip of text (HTML tags removed), max 60px tall.
+EDIT BUTTON: Blue pen icon >> update_page_details.php?type=[page_type]
+
+------------------------------------------------------------------------
+ADMIN PAGE 4.10 - EDIT PAGE CONTENT (NicEdit)
+File: admin/update_page_details.php
+URL:  update_page_details.php?type=[page_type]
+------------------------------------------------------------------------
+
+Rich text editor page. Admin edits any CMS page using visual tools.
+Changes appear instantly on the public website.
+
+HOW NICEDIT WORKS:
+  1. Page loads with ?type= parameter from URL
+  2. PHP fetches: SELECT page_data FROM pages WHERE page_type='[type]'
+  3. HTML content loaded into textarea
+  4. JavaScript (nicedit.js, 38KB) converts textarea to visual editor
+  5. Editor toolbar: Bold, Italic, Underline, Lists, Links, Font size
+  6. Admin edits content visually (no coding needed)
+  7. Click Save
+  8. PHP: UPDATE pages SET page_data='[html]' WHERE page_type='[type]'
+  9. Success message shown
+  10. Public site now shows updated content
+
+Content is stored as raw HTML in pages.page_data (LONGTEXT column).
+Public site echoes it directly: echo $row['page_data'];
+
+------------------------------------------------------------------------
+ADMIN PAGE 4.11 - UPDATE CONTACT INFO
+File: admin/update_contact.php
+URL:  http://localhost/RaktSeva/admin/update_contact.php
+------------------------------------------------------------------------
+
+Updates the hospital contact details shown on the public Contact Us page.
+
+FORM FIELDS (pre-filled with current values from database):
+  Address  (textarea) - hospital physical address
+  Email    (email)    - hospital contact email
+  Phone    (text)     - hospital phone number
+
+On submit:
+  UPDATE contact_info
+  SET contact_address='[addr]', contact_mail='[email]', contact_phone='[phone]'
+  WHERE contact_id='1'
+
+Success alert: "Contact Details Updated Successfully."
+
+NOTE: Only 1 contact record (contact_id=1). Single hospital setup.
+      You can only UPDATE, not add new contact records.
+
+------------------------------------------------------------------------
+ADMIN PAGE 4.12 - CHANGE ADMIN PASSWORD
+File: admin/change_password.php
+URL:  http://localhost/RaktSeva/admin/change_password.php
+------------------------------------------------------------------------
+
+Admin changes their login password from within the panel.
+
+FORM FIELDS:
+  Current Password (required)
+  New Password     (required)
+  Confirm Password (required)
+
+VALIDATION LOGIC:
+  Step 1: SELECT from admin_info WHERE username = _SESSION['username']
+  Step 2: Compare input "Current Password" with stored password (plain text)
+  Step 3: If wrong current pwd: "Current password is incorrect." (red alert)
+  Step 4: If new != confirm:     "New password and confirm do not match." (yellow)
+  Step 5: If new == current:     "New password cannot be same as current." (blue)
+  Step 6: All checks pass:       UPDATE admin_info SET admin_password='[new]'
+                                 "Password changed successfully." (green alert)
+
+NOTE: Admin passwords are plain text. Future improvement: use password_hash().
+
+------------------------------------------------------------------------
+ADMIN PAGE 4.13 - ADMIN LOGOUT
+File: admin/logout.php
+URL:  http://localhost/RaktSeva/admin/logout.php
+------------------------------------------------------------------------
+
+session_start() > session_destroy() > header(Location: login.php)
+
+After logout: all admin pages redirect to login.php.
+
+
+================================================================================
+PART 5 - DATABASE SCHEMA (All 7 Tables)
+================================================================================
+
+DATABASE NAME: blood_donation
+
+--- TABLE 1: donor_details ---
+Stores all registered blood donors.
+
+Column        | Type        | Notes
+--------------+-------------+--------------------------------------------------
+donor_id      | INT PK AI   | Auto-increment primary key
+donor_name    | VARCHAR     | Full name of the donor
+donor_number  | VARCHAR     | Mobile/phone number (required)
+donor_mail    | VARCHAR     | Email address (optional, can be empty)
+donor_age     | VARCHAR     | Age in years (stored as string)
+donor_gender  | VARCHAR     | "Male" or "Female"
+donor_blood   | INT (FK)    | References blood.blood_id (integer, not text)
+donor_address | TEXT        | Full home/area address
+
+JOIN RELATIONSHIP:
+  donor_blood (INT) references blood.blood_id
+  To show "A+" instead of "1", query uses:
+    JOIN blood ON donor_details.donor_blood = blood.blood_id
+
+--- TABLE 2: users ---
+Stores registered user accounts (for dashboard/login).
+
+Column      | Type        | Notes
+------------+-------------+----------------------------------------------------
+user_id     | INT PK AI   | Auto-increment primary key
+full_name   | VARCHAR     | User's complete name
+email       | VARCHAR     | UNIQUE - used as login identifier
+password    | VARCHAR     | bcrypt hash from PHP password_hash()
+mobile      | VARCHAR     | Optional phone number
+blood_group | VARCHAR     | Optional blood group (A+, B-, etc. as text)
+created_at  | TIMESTAMP   | Auto-set to account creation time
+
+--- TABLE 3: admin_info ---
+Stores admin login credentials.
+
+Column          | Type        | Notes
+----------------+-------------+------------------------------------------------
+admin_id        | INT PK AI   | Auto-increment primary key
+admin_username  | VARCHAR     | Login username
+admin_password  | VARCHAR     | Password - stored as PLAIN TEXT (security risk)
+
+Default row: admin_username='admin', admin_password='admin'
+
+--- TABLE 4: blood ---
+Reference table for blood group options.
+
+Column      | Type        | Notes
+------------+-------------+----------------------------------------------------
+blood_id    | INT PK      | 1 to 8
+blood_group | VARCHAR     | Display text
+
+Blood group records:
+  1=A+  2=A-  3=B+  4=B-  5=O+  6=O-  7=AB+  8=AB-
+
+--- TABLE 5: pages ---
+CMS content storage. Admin edits this. Public site reads it.
+
+Column    | Type        | Notes
+----------+-------------+------------------------------------------------------
+page_id   | INT PK AI   | Auto-increment primary key
+page_name | VARCHAR     | Human-readable name (e.g., "Blood Tips")
+page_type | VARCHAR     | Code key used in PHP (e.g., "bloodtips")
+page_data | LONGTEXT    | HTML content saved from NicEdit editor
+
+Page types and where shown:
+  needforblood  Home: "The need for blood" card
+  bloodtips     Home: "Blood Tips" card
+  whoyouhelp    Home: "Who you could Help" card
+  bloodgroups   Home: Blood Groups section
+  universal     Home: Universal Donors section
+  (others)      About Us, Why Donate pages
+
+--- TABLE 6: contact_info ---
+Hospital contact details shown on Contact Us page.
+
+Column           | Type        | Notes
+-----------------+-------------+-----------------------------------------------
+contact_id       | INT PK      | Always = 1 (single hospital record)
+contact_address  | TEXT        | Hospital address
+contact_phone    | VARCHAR     | Phone number
+contact_mail     | VARCHAR     | Email address
+
+Only 1 row exists. Updated via Admin > Update Contact.
+
+--- TABLE 7: contact_query ---
+All messages from Contact Us form.
+
+Column         | Type        | Notes
+---------------+-------------+------------------------------------------------
+query_id       | INT PK AI   | Auto-increment primary key
+query_name     | VARCHAR     | Sender's name
+query_mail     | VARCHAR     | Sender's email
+query_number   | VARCHAR     | Sender's phone number
+query_message  | TEXT        | The message (max 999 chars enforced in form)
+query_date     | TIMESTAMP   | Auto-set to submission time
+query_status   | TINYINT     | 1=Read, 2=Pending (default is 2)
+
+
+================================================================================
+PART 6 - FILE STRUCTURE (Every File Explained)
+================================================================================
+
+ROOT LEVEL FILES
+----------------
+home.php              Main public homepage (news ticker, carousel, donor cards,
+                      blood groups, CTA button - all pulled from DB)
+about_us.php          About Us page (CMS content from pages table)
+why_donate_blood.php  Why Donate page (CMS content from pages table)
+donate_blood.php      Public blood donor registration form
+need_blood.php        Blood search form + results page
+contact_us.php        Contact form + hospital contact info display
+user_register.php     New user account registration with full validation
+user_login.php        User login with bcrypt password verification
+user_dashboard.php    Personal dashboard for logged-in users
+user_logout.php       Session destroyer, redirects to home.php
+savedata.php          POST form handler: saves donor data, redirects home
+search_blood_group.php  LEGACY: old search handler, not in nav, replaced by
+                          need_blood.php. Can be deleted.
+conn.php              DB connection for all public pages
+                        mysqli_connect("localhost","root","","blood_donation")
+head.php              Shared HTML head: Bootstrap CSS, Font Awesome, style.css,
+                        jQuery, Bootstrap JS, full navbar HTML
+                        Uses $active variable for menu highlighting
+footer.php            Shared footer: tagline, nav links, copyright (auto-year)
+slider.php            LEGACY: old carousel component. Likely unused. Can delete.
+ticker.php            News ticker: self-contained CSS + HTML for scrolling bar
+how_to_run.txt        Quick local setup guide
+
+ADMIN FOLDER (admin/)
+----------------------
+login.php               Admin login page + session creation
+logout.php              Admin session destroy + redirect to login
+session.php             Session guard: checked on every admin page
+                          If not logged in -> redirect to login.php
+dashboard.php           Dashboard with 3 live stat cards
+header.php              Shared admin topbar HTML
+sidebar.php             Shared admin sidebar with navigation links
+admin.css               All admin CSS: sidebar, tables, cards, buttons, forms
+donor_list.php          Paginated table of all donors + delete action
+add_donor.php           Admin manual donor entry form
+save_donor_data.php     POST handler for add_donor.php
+delete.php              Delete donor by ID from URL (?id=X)
+query.php               All queries table: read/delete, status management
+pending_query.php       Filtered queries: only pending (status=2)
+delete_query.php        Delete query by ID from URL (?id=X)
+pages.php               CMS page list table with Edit buttons
+update_page_details.php NicEdit rich text editor for CMS content
+update_contact.php      Update hospital contact info form
+change_password.php     Admin password change with validation
+nicedit.js              NicEdit WYSIWYG editor library (38KB JavaScript)
+conn.php                DB connection for admin pages (same as root conn.php)
+
+CSS FILES
+---------
+css/style.css     Public site: CSS variables, navbar, footer, cards, buttons,
+                  forms, donor cards, auth cards, stat cards, ticker animation
+admin/admin.css   Admin panel: sidebar layout, admin tables, admin cards,
+                  admin forms, admin buttons, dashboard stat cards, badges
+
+IMAGE FOLDER (image/)
+---------------------
+_107317099_blooddonor976.jpg                     Carousel slide 1
+Blood-facts_10-illustration-graphics__canteen.png Carousel slide 2
+blood_drop_logo.jpg                               Default donor profile photo
+blood_donationcover.jpeg                          Blood groups section image
+
+SQL FOLDER (sql/)
+-----------------
+blood_bank_database.sql   Full database setup:
+                          - CREATE TABLE for all 7 tables
+                          - INSERT seed data (blood groups, admin, pages,
+                            contact info, sample donors)
+                          Import this via phpMyAdmin to setup the database
+
+
+================================================================================
+PART 7 - USER EXPERIENCE FLOWS
+================================================================================
+
+--- FLOW 1: FIRST-TIME VISITOR BECOMES A DONOR ---
+
+A person hears about RaktSeva and visits for the first time.
+No account needed to register as a donor.
+
+1.  Opens: http://localhost/RaktSeva/home.php
+2.  Sees news ticker scrolling at top with upcoming camp info
+3.  Image carousel slides through blood donation photos
+4.  Reads 3 info cards: need for blood, blood tips, who they help
+5.  Scrolls down to "Our Heroes" - sees 6 random donor cards with
+    names, blood groups, phone numbers and addresses
+6.  Reads blood groups section: learns about A+, O-, AB+, etc.
+7.  Sees "Become a Donor" button in the Universal Donors section
+8.  Clicks "Become a Donor" - goes to donate_blood.php
+9.  Fills in form:
+      Full Name: Rahul Sharma
+      Mobile:    09876543210
+      Email:     (optional, left blank)
+      Age:       27
+      Gender:    Male
+      Blood:     O+ (selected from dropdown)
+      Address:   123 MG Road, Vadodara
+10. Clicks "Submit Details"
+11. savedata.php runs INSERT INTO donor_details(...)
+12. Redirected to home.php
+13. Rahul's card may now randomly appear in "Our Heroes" section!
+14. Any blood seeker searching O+ can now find Rahul's phone number
+
+--- FLOW 2: USER CREATES ACCOUNT AND TRACKS STATUS ---
+
+A person wants to register and track their donor status over time.
+
+1.  Clicks "Register" in navbar
+2.  user_register.php - fills form:
+      Full Name:        Priya Patel
+      Email:            priya@gmail.com
+      Mobile:           09123456789
+      Blood Group:      B+ (optional)
+      Password:         mypassword
+      Confirm Password: mypassword
+3.  Clicks "Create Account"
+4.  PHP validates: all fields ok, email unique, password match
+5.  password_hash() creates bcrypt hash
+6.  INSERT INTO users - record saved
+7.  Success alert: "Account created! You can now Login"
+8.  Priya clicks the Login link
+9.  user_login.php - enters priya@gmail.com + mypassword
+10. PHP: SELECT user, password_verify() passes
+11. Session created with user_id, user_name, user_email
+12. Redirected to user_dashboard.php
+13. Welcome banner: "Welcome, Priya Patel!" with B+ badge
+14. Stat cards: Account Active | Not Registered | Complete
+15. Donor Status card shows "Become a Donor" button
+16. Priya clicks "Register as Donor" >> donate_blood.php
+17. Fills donor form, uses priya@gmail.com in Email field
+18. Submits >> saves to donor_details with email priya@gmail.com
+19. Returns to dashboard (http://localhost/RaktSeva/user_dashboard.php)
+20. Donor Status card NOW shows: Name, B+ (big red), Age, Gender, Address
+21. Stat card 2 now shows: "Registered Donor" in red
+22. Priya can always come back to check her donor status
+
+--- FLOW 3: BLOOD SEEKER FINDS A DONOR ---
+
+Someone urgently needs AB- blood for a sick family member.
+
+1.  Opens: http://localhost/RaktSeva/need_blood.php
+2.  Blood Group dropdown: selects "AB-"
+3.  Reason field: types "Mother admitted for surgery, urgent need"
+4.  Clicks Search button
+5.  PHP queries: SELECT ... WHERE donor_blood=8 ORDER BY RAND() LIMIT 6
+6.  Results show (if any AB- donors registered):
+      Donor cards with names, phone numbers, addresses
+7.  Caller dials the donor's mobile number directly
+8.  Donor agrees to go to hospital
+9.  Life potentially saved through the system
+
+If no AB- donors:
+  Red alert: "No Donor Found For your search Blood group."
+  Person goes to Contact Us page to ask hospital for help.
+
+--- FLOW 4: ADMIN FULL DAILY WORKFLOW ---
+
+Morning routine for hospital admin staff.
+
+START OF DAY:
+1.  Open: http://localhost/RaktSeva/admin/login.php
+2.  Enter admin / admin (then change this password!)
+3.  Dashboard loads with 3 stat numbers:
+      Total Donors:    45
+      Total Queries:   23
+      Pending Queries:  7  << NEEDS ATTENTION
+
+HANDLE PENDING QUERIES (most urgent):
+4.  Click "Pending Queries" in sidebar
+5.  See 7 unread messages
+6.  Message 1: "Rohan needs O+ blood, mother in ICU, please help"
+7.  Admin calls Rohan back on listed phone number
+8.  Also searches donor list to find O+ donors to suggest
+9.  Clicks yellow "Pending" badge >> confirm >> marked as Read
+10. Continue for remaining 6 messages
+11. Delete spam or resolved old messages
+
+MANAGE DONOR LIST:
+12. Click "View Donors" in sidebar
+13. Browse the paginated list
+14. Donor "Suresh Kumar" called to say he moved away, remove his listing
+15. Click Delete >> confirm >> donor record permanently removed
+16. Click "Add Donor" to add offline registration from a camp yesterday
+17. Fill all fields for new donor >> Save Donor
+18. Donor now appears in list and is searchable on public site
+
+UPDATE WEBSITE CONTENT:
+19. Hospital blood camp info needs updating on home page
+20. Admin Panel >> Pages
+21. Find "Blood Tips" row, click Edit
+22. NicEdit loads with current blood tips content
+23. Add new tip: "Eat iron-rich foods 24 hours before donating"
+24. Click Save >> pages.page_data updated in database
+25. Open home.php in new tab >> Blood Tips card shows new content
+
+DAILY WRAP-UP:
+26. Admin > Update Contact: update phone number after staff change
+27. Admin > Change Password: change from "admin" to strong password
+28. Click Logout >> session destroyed, redirected to login page
+
+
+================================================================================
+PART 8 - SECURITY ANALYSIS
+================================================================================
+
+WHAT IS IMPLEMENTED AND WORKING:
+---------------------------------
+Feature                        How it works
+-----------------------------  -------------------------------------------------
+User password hashing          password_hash() with PASSWORD_DEFAULT (bcrypt)
+                               password_verify() for login check
+User session protection        _SESSION['user_loggedin'] checked on dashboard
+                               If false or missing: redirect to login
+Admin session protection       session.php included on every admin page
+                               Checks _SESSION['loggedin']; redirect if missing
+HTML output escaping           htmlspecialchars() on all database output
+                               Prevents XSS attacks in displayed content
+Email format validation        FILTER_VALIDATE_EMAIL in registration
+Duplicate email prevention     SELECT before INSERT in registration
+Minimum password length        6 characters required (enforced in PHP)
+Auto-redirect if logged in     Login/register pages redirect to dashboard
+                               Prevents double-login confusion
+
+WHAT IS MISSING OR INCOMPLETE:
+--------------------------------
+Issue                          Risk Level    Fix Needed
+-----------------------------  ------------  -----------------------------------
+Admin plain text passwords     HIGH          Use password_hash() for admin too
+No prepared statements         HIGH          Use PDO or mysqli prepared stmts
+                               (SQL injection possible via some forms)
+No CSRF tokens                 MEDIUM        Add CSRF token to all POST forms
+Inconsistent sanitization      MEDIUM        Some forms miss mysqli_escape
+contact_us.php has no escaping MEDIUM        Add escaping to contact form POST
+No HTTPS                       LOCAL issue   Use SSL cert on production server
+
+QUICK FIX FOR MOST CRITICAL ISSUE (savedata.php SQL injection):
+  Current (unsafe):
+    $name = $_POST['fullname'];
+    $sql = "INSERT INTO ... VALUES('{$name}', ...)";
+
+  Fixed (safe, prepared statement):
+    $stmt = $conn->prepare("INSERT INTO ... VALUES(?, ?, ...)");
+    $stmt->bind_param("s", $_POST['fullname']);
+    $stmt->execute();
+
+
+================================================================================
+PART 9 - COMMON ERRORS AND FIXES
+================================================================================
+
+ERROR: "Connection error" appears on any page
+  CAUSE: conn.php has wrong DB credentials or MySQL not started
+  FIX 1: Start MySQL in XAMPP Control Panel
+  FIX 2: Check conn.php: mysqli_connect("localhost","root","","blood_donation")
+
+ERROR: 404 Page Not Found
+  CAUSE: Project folder wrong name or wrong URL
+  FIX:   Folder must be at: C:\xampp\htdocs\RaktSeva\
+         URL must be: http://localhost/RaktSeva/home.php
+
+ERROR: "query unsuccessful" shown anywhere
+  CAUSE: Database tables don't exist (SQL file not imported)
+  FIX:   Import sql/blood_bank_database.sql via phpMyAdmin
+         See Part 2 Step 3
+
+ERROR: After donor form submit, get 404 at /BDMS/home.php
+  CAUSE: savedata.php has old folder name in redirect
+  FIX:   Open RaktSeva/savedata.php line 13
+         Change: header("Location: http://localhost/BDMS/home.php");
+         To:     header("Location: http://localhost/RaktSeva/home.php");
+
+ERROR: Admin login fails even with admin/admin
+  CAUSE: admin_info table empty or has different data
+  FIX:   In phpMyAdmin > blood_donation > admin_info table
+         Check for row: admin_username='admin', admin_password='admin'
+         If missing, run SQL:
+           INSERT INTO admin_info (admin_username, admin_password)
+           VALUES ('admin', 'admin');
+
+ERROR: NicEdit editor not loading in admin CMS
+  CAUSE: admin/nicedit.js file missing
+  FIX:   Ensure file exists at: RaktSeva/admin/nicedit.js (should be 38KB)
+
+ERROR: Images not showing (broken image icon)
+  CAUSE: Images missing from image/ folder
+  FIX:   Ensure these files exist in RaktSeva/image/:
+           blood_drop_logo.jpg
+           blood_donationcover.jpeg
+           _107317099_blooddonor976.jpg
+           Blood-facts_10-illustration-graphics__canteen.png
+
+ERROR: Completely white/blank page
+  CAUSE: PHP syntax error
+  FIX:   Check XAMPP error log: C:\xampp\logs\error.log
+         Or add to PHP file top: error_reporting(E_ALL); ini_set('display_errors',1);
+
+ERROR: "No Donor Found" always, even after adding donors
+  CAUSE: Blood group ID mismatch (donor_blood stores ID not text)
+  FIX:   Verify blood table has all 8 blood groups
+         Verify savedata.php is passing blood_id (not blood group text)
+         Check: donor_blood column in donor_details contains 1-8
+
+ERROR: Dashboard shows "Not Registered as Donor" even after donating
+  CAUSE: Email mismatch between users.email and donor_details.donor_mail
+  FIX:   When filling donate_blood.php, use EXACT SAME email
+         as used during user registration
+         System matches: WHERE donor_details.donor_mail = users.email
+
+
+================================================================================
+PART 10 - FUTURE ROADMAP
+================================================================================
+
+PLANNED FEATURES FOR NEXT VERSIONS:
+
+Priority  Feature                    Description
+--------  -------------------------  -------------------------------------------
+HIGH      Admin password hashing     Use password_hash() for admin_info table
+HIGH      PDO prepared statements    Replace all raw SQL to prevent injection
+HIGH      Input sanitization         Sanitize all POST data consistently
+MEDIUM    Email notifications        Auto-email when admin replies to a query
+MEDIUM    SMS alerts                 Notify donors when urgent blood needed
+MEDIUM    Location-based search      Filter donors by city/district/area
+MEDIUM    Donor availability toggle  Donors mark themselves available/unavailable
+MEDIUM    User profile edit          Users update their own name/mobile/blood
+MEDIUM    Blood inventory tracking   Track blood units per group in hospital
+LOW       Printable donor cards      Generate PDF ID card for registered donors
+LOW       Admin reply system         Reply to queries directly from admin panel
+LOW       Export to Excel/PDF        Download donor list from admin panel
+LOW       Admin search/filter        Filter donors by name/blood in admin table
+LOW       Dynamic news ticker        Admin edits ticker text via CMS panel
+LOW       Multi-admin support        Multiple admin accounts with roles
+LOW       Audit/activity log         Record all admin actions for accountability
+LOW       Dark mode toggle           Theme switcher for public website
+LOW       Mobile app API             REST API for potential future mobile app
+
+
+================================================================================
+PART 11 - DEVELOPER NOTES
+================================================================================
+
+SHARED PHP COMPONENTS
+----------------------
+head.php - Included at TOP of every public page via: include('head.php');
+  Contains: DOCTYPE, meta charset, meta viewport, page title tag,
+            Bootstrap 4.6.2 CSS (CDN), Font Awesome 6.4.0 CSS (CDN),
+            css/style.css (local), navbar HTML with all links and session logic
+            jQuery 3.5.1 (CDN), Bootstrap 4.6.2 JS (CDN)
+  Uses $active PHP variable (set before include) to highlight current nav link
+
+footer.php - Included at BOTTOM of every public page: include('footer.php');
+  Contains: footer HTML with tagline + links + copyright using PHP date('Y')
+            closing </body> and </html> tags
+
+ticker.php - Included on home.php only, just after head.php
+  Contains: own <style> block with ticker CSS + ticker HTML markup
+  No database calls - currently static hardcoded text
+  Self-contained, portable, no dependencies
+
+ACTIVE MENU SYSTEM
+------------------
+Before including head.php, each page sets:
+  $active = "home";     makes Home nav link active/highlighted
+  $active = "donate";   makes Donate Blood active
+  $active = "need";     makes Need Blood active
+  $active = "contact";  makes Contact Us active
+  $active = "";         no nav link highlighted (login, register, dashboard)
+
+head.php checks $active and applies CSS active class to matching nav <a> tag.
+
+ADMIN PAGE TEMPLATE PATTERN
+-----------------------------
+All admin pages follow this exact structure:
+
+  <?php
+  session_start();
+  include 'conn.php';
+  include 'session.php';    // redirect to login if not logged in
+  if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+      header("Location: login.php"); exit;
+  }
+  $page_title = "Page Name Here";
+  $active = "sidebar_key";
+  include 'header.php';   // renders admin topbar
+  include 'sidebar.php';  // renders left sidebar
+  ?>
+
+  <div class="admin-main">
+    <div class="admin-content">
+      <div class="page-header">
+        <h1>Page Title</h1>
+        <p>Subtitle description</p>
+      </div>
+
+      <!-- page-specific content: tables, forms, cards -->
+
+    </div>
+  </div>
+  </body>
+  </html>
+
+TWO conn.php FILES - IMPORTANT
+--------------------------------
+RaktSeva/conn.php        - used by ALL public root-level pages
+RaktSeva/admin/conn.php  - used by ALL admin subdirectory pages
+
+Both connect to the same database with identical credentials:
+  $conn = mysqli_connect("localhost","root","","blood_donation")
+
+If you change database settings, update BOTH files.
+
+LEGACY FILES THAT CAN BE REMOVED
+----------------------------------
+search_blood_group.php
+  Old search POST handler returning outdated Bootstrap card HTML.
+  Not linked in main navigation. Completely replaced by need_blood.php.
+  Safe to delete.
+
+slider.php
+  Old carousel component. The carousel is now directly in home.php.
+  File likely orphaned and unused.
+  Verify no includes reference it, then safe to delete.
+
+CSS CUSTOM PROPERTIES (in css/style.css)
+-----------------------------------------
+Key color variables:
+  --primary:       #b91c1c   Main blood red (buttons, badges, borders, accents)
+  --primary-dark:  #991b1b   Darker red for hover states
+  --dark:          #1a1a2e   Deep dark navy (hero banner backgrounds)
+  --dark-mid:      #16213e   Dark gradient end color (hero banners)
+
+To change the site's theme color: update only --primary and --primary-dark.
+All buttons, badges, borders, active states will update automatically.
+
+DATABASE CONNECTION REFERENCE
+-------------------------------
+Host:       localhost
+Port:       3306 (MySQL default)
+Username:   root
+Password:   (empty string, XAMPP default)
+Database:   blood_donation
+Extension:  MySQLi (object or procedural, this project uses procedural)
+Connection: mysqli_connect("localhost","root","","blood_donation")
+            or die("Connection error");
+
+
+================================================================================
+END OF USER MANUAL
+================================================================================
+Project    : RaktSeva - Blood Bank & Donor Management System
+Author     : Engr Shuvo Das
+Contact    : engrshuvoda@gmail.com
+GitHub     : https://github.com/engrshuvodas
+Document   : Written July 2026 by Antigravity AI (Google DeepMind)
+
+"Every drop counts. Every donor is a hero."
+"Saving lives, one donation at a time."
+================================================================================
