@@ -1450,7 +1450,6 @@ Project    : RaktSeva - Blood Bank & Donor Management System
 Author     : Engr Shuvo Das
 Contact    : engrshuvoda@gmail.com
 GitHub     : https://github.com/engrshuvodas
-Document   : Written July 2026 by Antigravity AI (Google DeepMind)
 
 "Every drop counts. Every donor is a hero."
 "Saving lives, one donation at a time."
